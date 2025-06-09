@@ -5,7 +5,7 @@
       "name": "Executar C no terminal",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/funcs.exe",
+      "program": "${workspaceFolder}/funcoes/funcs.exe",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
