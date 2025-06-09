@@ -11,6 +11,20 @@
                 "UNICODE",
                 "_UNICODE"
             ]
+        },
+        {
+            "name": "C:/MinGW/include",
+            "includePath": [
+                "C:/MinGW/include",
+                "C:/MinGW/lib/gcc/mingw32/6.3.0/include",
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:/MinGW/bin/gcc.exe"
         }
     ],
     "version": 4
