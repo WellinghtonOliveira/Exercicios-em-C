@@ -4,10 +4,10 @@ int main() {
 	
 	FILE *ftpr;
 	
-	ftpr = fopen("arquivoTeste.txt", "w");
+	ftpr = fopen("arquivoTeste.txt", "a");
 	
 	//Escrevendo em um arquivo
-	fprintf(ftpr, "escrevendo em um arquivo de texto");
+	fprintf(ftpr, "\nEscrevendo em baixo do texto existente");
 	
 	fclose(ftpr);
 	
