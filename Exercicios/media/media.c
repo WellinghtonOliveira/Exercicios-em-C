@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 char gradeFuncao(double str) {
 	if (str >= 90) return 'A';
@@ -25,21 +26,26 @@ int main() {
 			scanf("%lf", &nota);
 			sum += nota;
 		}
+		
+		// system("cls"); usado para limpar o console
 	
 		media = sum / materia;
-		printf("\n\nSua media e => %.2lf", media);
+		printf("\nSua media e => %.2lf", media);
 		printf("\nVoce tirou um => %c", gradeFuncao(media));
 		
 		printf("\nVoce deseja refazer o calculo, [S|N] => ");
 		scanf(" %c", &continuar);
 		
-	
+		char loading[30] = { ".", "..", "..." };
 		if (continuar == 's' || continuar == 'S') {
 			printf("---------------------------");
 			printf("\n[%d] - Repetindo...", cont);
 			cont += 1;
 		}else if (continuar == 'n' || continuar == 'N') {
-			printf("\nFinalizando...");
+			system("cls");
+			for (int i = 0; i < 3; i++) {
+				printf("\nFinalizando%c", loading[0][i] );
+			}
 		}else {
 			printf("\nLetra invalida.");
 			return 1;
