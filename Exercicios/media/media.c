@@ -10,10 +10,9 @@ char gradeFuncao(double str) {
 
 int main() {
 	
-	char continuar = '0';
+	char continuar = ' ';
 
 	do {
-		continuar = '0';
 		int materia;
 		double sum = 0, nota, media;
 		
