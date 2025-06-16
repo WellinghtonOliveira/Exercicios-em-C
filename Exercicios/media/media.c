@@ -10,7 +10,7 @@ char gradeFuncao(double str) {
 
 int main() {
 	
-	char continuar = ' ';
+	char continuar;
 
 	do {
 		int materia;
@@ -29,8 +29,9 @@ int main() {
 		printf("\n\nSua media e => %.2lf", media);
 		printf("\nVoce tirou um => %c", gradeFuncao(media));
 		
-		printf("\n\nVoce deseja refazer o calculo, [S|N] => ");
-		scanf("%c", &continuar);
+		printf("\nVoce deseja refazer o calculo, [S|N] => ");
+		scanf(" %c", &continuar);
+		
 	
 		if (
 		continuar != 's'||
@@ -42,7 +43,7 @@ int main() {
 			return 1;
 		}
 	
-	} while (continuar != 'S' || continuar != 's');
+	} while (continuar == 'S' || continuar == 's');
 	
 	return 0;
 }
