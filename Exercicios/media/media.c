@@ -11,6 +11,7 @@ char gradeFuncao(double str) {
 int main() {
 	
 	char continuar;
+	int cont = 0;
 
 	do {
 		int materia;
@@ -20,7 +21,7 @@ int main() {
 		scanf("%d", &materia);
 	
 		for (int i = 0; i < materia; i++) {
-			printf("\nNota - Materia %d => ", + 1);
+			printf("\nNota - Materia %d => ", i + 1);
 			scanf("%lf", &nota);
 			sum += nota;
 		}
@@ -33,13 +34,14 @@ int main() {
 		scanf(" %c", &continuar);
 		
 	
-		if (
-		continuar != 's'||
-		continuar != 'S'||
-		continuar != 'n'||
-		continuar != 'N'
-		) {
-			printf("\n\nLetra invalida");
+		if (continuar == 's' || continuar == 'S') {
+			printf("---------------------------");
+			printf("\n[%d] - Repetindo...", cont);
+			cont += 1;
+		}else if (continuar == 'n' || continuar == 'N') {
+			printf("\nFinalizando...");
+		}else {
+			printf("\nLetra invalida.");
 			return 1;
 		}
 	
