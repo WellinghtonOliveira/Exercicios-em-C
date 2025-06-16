@@ -36,7 +36,7 @@ int main() {
 		printf("\nVoce deseja refazer o calculo, [S|N] => ");
 		scanf(" %c", &continuar);
 		
-		char loading[30] = { ".", "..", "..." };
+		char loading[1] = ".";
 		if (continuar == 's' || continuar == 'S') {
 			printf("---------------------------");
 			printf("\n[%d] - Repetindo...", cont);
@@ -44,7 +44,7 @@ int main() {
 		}else if (continuar == 'n' || continuar == 'N') {
 			system("cls");
 			for (int i = 0; i < 3; i++) {
-				printf("\nFinalizando%c", loading[0][i] );
+				printf("\nSaindo%c", loading[j][0]);
 			}
 		}else {
 			printf("\nLetra invalida.");
