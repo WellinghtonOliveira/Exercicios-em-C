@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 
 char gradeFuncao(double str) {
 	if (str >= 90) return 'A';
@@ -36,15 +37,24 @@ int main() {
 		printf("\nVoce deseja refazer o calculo, [S|N] => ");
 		scanf(" %c", &continuar);
 		
-		char loading[1][3] = { ".", "..", "..." };
+		char loading[3][10] = { ".", "..", "..." };
 		if (continuar == 's' || continuar == 'S') {
 			printf("---------------------------");
 			printf("\n[%d] - Repetindo...", cont);
 			cont += 1;
 		}else if (continuar == 'n' || continuar == 'N') {
 			system("cls");
-			for (int i = 0; i < 2; i++) {
-				printf("\nFinalizando%s", loading[i][0]);
+			printf("\nFinalizando");
+			Sleep(1000);
+			
+			for (int j = 0; j < 2; j++) {
+				
+				for (int i = 0; i < 3; i++) {
+					system("cls");
+					printf("\nFinalizando%s", loading[i]);
+					Sleep(500);
+				}
+			
 			}
 		}else {
 			printf("\nLetra invalida.");
