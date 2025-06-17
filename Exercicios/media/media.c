@@ -36,15 +36,15 @@ int main() {
 		printf("\nVoce deseja refazer o calculo, [S|N] => ");
 		scanf(" %c", &continuar);
 		
-		char loading[1] = ".";
+		char loading[1][3] = { ".", "..", "..." };
 		if (continuar == 's' || continuar == 'S') {
 			printf("---------------------------");
 			printf("\n[%d] - Repetindo...", cont);
 			cont += 1;
 		}else if (continuar == 'n' || continuar == 'N') {
 			system("cls");
-			for (int i = 0; i < 3; i++) {
-				printf("\nSaindo%c", loading[j][0]);
+			for (int i = 0; i < 2; i++) {
+				printf("\nFinalizando%s", loading[i][0]);
 			}
 		}else {
 			printf("\nLetra invalida.");
