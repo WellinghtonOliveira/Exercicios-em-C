@@ -38,24 +38,47 @@ int main() {
 		scanf(" %c", &continuar);
 		
 		char loading[3][10] = { ".", "..", "..." };
+		
 		if (continuar == 's' || continuar == 'S') {
-			printf("---------------------------");
-			printf("\n[%d] - Repetindo...", cont);
-			cont += 1;
-		}else if (continuar == 'n' || continuar == 'N') {
+			
 			system("cls");
-			printf("\nFinalizando");
+			printf("---------------------------");
+			printf("\n[%d] - Carregando", cont);
+			printf("\n---------------------------");
 			Sleep(1000);
 			
-			for (int j = 0; j < 2; j++) {
+			for (int j = 0; j < 3; j++) {
 				
 				for (int i = 0; i < 3; i++) {
 					system("cls");
+					printf("---------------------------");
+					printf("\n[%d] - Carregando%s", cont, loading[i]);
+					printf("\n---------------------------");	
+					Sleep(600);
+				}		
+			}
+			
+			cont += 1;
+			system("cls");
+		}else if (continuar == 'n' || continuar == 'N') {
+			system("cls");
+			printf("---------------------------");
+			printf("\nFinalizando");
+			printf("\n---------------------------");
+			Sleep(1000);
+			
+			for (int j = 0; j < 3; j++) {
+				
+				for (int i = 0; i < 3; i++) {
+					system("cls");
+					printf("---------------------------");
 					printf("\nFinalizando%s", loading[i]);
+					printf("\n---------------------------");
 					Sleep(500);
 				}
-			
 			}
+			
+			system("cls");
 		}else {
 			printf("\nLetra invalida.");
 			return 1;
