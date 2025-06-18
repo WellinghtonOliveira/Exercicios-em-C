@@ -2,16 +2,16 @@
 #include <windows.h>
 
 int main() {
-
+	char carregarNovamente;
 	int tempoCarregamento;
 	char carregamento[3][10] = { "[", "=", "]" };
-	char carregarNovamente;
-
-	printf("Digite o tempo de carregamento: ");
-	scanf(" %d", &tempoCarregamento);
 
 	do {
-		 system("cls");
+		printf("Digite o tempo de carregamento: ");
+		scanf(" %d", &tempoCarregamento);
+
+		system("cls");
+
 		if (tempoCarregamento >= 3) {
 			for (int j = 0; j <= tempoCarregamento; j++) {
 				if (j == 0) {
@@ -24,8 +24,9 @@ int main() {
 			}
 		} else {
 			printf("\nDigite um numero maior ou igual a 3");
+			Sleep(1000);
 			continue;
-		} 
+		}
 		printf("\nCarregar Novamente [S|N] => ");
 		scanf(" %c", &carregarNovamente);
 		system("cls");
