@@ -24,7 +24,6 @@ int main() {
 			}
 		} else {
 			printf("\nDigite um numero maior ou igual a 3");
-			carregarNovamente = 's';
 			continue;
 		} 
 		printf("\nCarregar Novamente [S|N] => ");
