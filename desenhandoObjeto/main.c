@@ -2,7 +2,7 @@
 #include <windows.h>
 
 void draw() {
-    int vet[50][50] = { 0 };
+    int vet[10][10] = { 0 };
     int linhas = sizeof(vet) / sizeof(vet[0]);
     int colunas = sizeof(vet[0]) / sizeof(vet[0][0]);
 
@@ -19,16 +19,13 @@ void draw() {
         printf("\n");
         Sleep(60);
     }
-    printf("\n\n\n\n\n\n");
-}
-
-void clear() {
-
+    printf("\n\n\n\n\n");
 }
 
 int main() {
 
     draw();
+
     return 0;
 }
 
