@@ -1,23 +1,29 @@
 #include <stdio.h>
+#include <windows.h>
 
 void draw() {
-    int vet[30][30] = { 0 };
-    int count = 0;
+    int vet[50][50] = { 0 };
     int linhas = sizeof(vet) / sizeof(vet[0]);
     int colunas = sizeof(vet[0]) / sizeof(vet[0][0]);
 
+    printf("\n\n\n\n\n\n");
     for (int i = 0; i < linhas; i++) {
-        for (int j = 0; j < colunas; j++){
-            printf(" %d", vet[i][j]);
-            
-            if ( count % 2 == 0) {
-                printf("\n");
-                count++;
-            }
+        for (int j = 0; j < linhas - i - 1; j++) {
+            printf(" ");
         }
-        
 
-    } 
+        for (int j = 0; j <= i; j++){
+            printf("%d ", vet[i][j]);
+
+        }
+        printf("\n");
+        Sleep(60);
+    }
+    printf("\n\n\n\n\n\n");
+}
+
+void clear() {
+
 }
 
 int main() {
