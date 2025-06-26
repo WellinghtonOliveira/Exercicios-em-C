@@ -9,7 +9,13 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-IC:/SDL3/include", // pasta include SDL3
+                "main.c",
+                "-LC:/SDL3/lib/x64", // pasta lib SDL3 (x64)
+                "-lSDL3", // biblioteca SDL3
+                "-o",
+                "main.exe"
             ],
             "options": {
                 "cwd": "C:/MinGW/bin"
