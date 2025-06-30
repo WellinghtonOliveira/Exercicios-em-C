@@ -6,17 +6,13 @@
 bool *kidsWithCandies(int *candies, int candiesSize, int extraCandies, int *returnSize)
 {
     bool *arrayValores = malloc(candiesSize * sizeof(bool));
-
     int totalCandies;
     int i, k, cont;
-
     for (i = 0; i < candiesSize; i++)
     {
         totalCandies = 0;
         cont = 0;
-
         totalCandies = candies[i] + extraCandies;
-
         for (k = 0; k < candiesSize; k++)
         {
             if (totalCandies >= candies[k])
@@ -24,10 +20,8 @@ bool *kidsWithCandies(int *candies, int candiesSize, int extraCandies, int *retu
                 cont++;
             }
         }
-
         arrayValores[i] = (cont == candiesSize);
     }
-
     *returnSize = candiesSize;
     return  arrayValores;
 }
