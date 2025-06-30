@@ -1,0 +1,14 @@
+Você tem um canteiro longo, no qual algumas parcelas estão plantadas e outras não. No entanto, não é possível plantar flores em parcelas adjacentes .
+
+Dado um array de inteiros flowerbedcontendo 0's e 1's, onde 0significa vazio e 1significa não vazio, e um inteiro n, retorne true se n novas flores podem ser plantadas no flowerbed sem violar a regra de nenhuma flor adjacente e false caso contrário .
+
+ 
+
+Exemplo 1:
+
+Entrada: canteiro = [1,0,0,0,1], n = 1
+ Saída: verdadeiro
+Exemplo 2:
+
+Entrada: canteiro = [1,0,0,0,1], n = 2
+ Saída: falso
