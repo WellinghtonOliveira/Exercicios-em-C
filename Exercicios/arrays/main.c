@@ -28,7 +28,7 @@ char* mergeAlternately(char* word1, char* word2) {
 }
 
 int main() {
-    char w1[] = "CCC", w2[] = "BBB";
+    char w1[] = "aaaaa", w2[] = "bbbbb";
 
     char* resultado = mergeAlternately(w1, w2);
     if (resultado != NULL) {
