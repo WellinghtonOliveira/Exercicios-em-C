@@ -1,0 +1,18 @@
+Para duas strings se t, dizemos " tdivide s" se e somente se s = t + t + t + ... + t + t(ou seja, té concatenado consigo mesmo uma ou mais vezes).
+
+Dadas duas strings str1e str2, retorne a maior string xque xdivide ambas str1estr2 .
+
+ 
+
+Exemplo 1:
+
+Entrada: str1 = "ABCABC", str2 = "ABC"
+ Saída: "ABC"
+Exemplo 2:
+
+Entrada: str1 = "ABABAB", str2 = "ABAB"
+ Saída: "AB"
+Exemplo 3:
+
+Entrada: str1 = "LEET", str2 = "CODE"
+ Saída: ""
