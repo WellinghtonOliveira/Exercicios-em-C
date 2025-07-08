@@ -1,40 +1,46 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-char strF[100];
+// Função para calcular o MDC (máximo divisor comum)
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+// Função principal que retorna o GCD das strings
 char* gcdOfStrings(char* str1, char* str2) {
-    strF[0] = '\0';
-    int tam1 = strlen(str1);
-    int tam2 = strlen(str2);
-    int i, k, cont = 0;
+    static char result[100]; // Resultado final
 
-    k = tam1 > tam2 ? tam1 : tam2;
+    // Verifica se str1 + str2 == str2 + str1
+    char temp1[200], temp2[200];
+    strcpy(temp1, str1);
+    strcat(temp1, str2);
+    strcpy(temp2, str2);
+    strcat(temp2, str1);
 
-    for (i = 0; i < k; i++) {
-        if (str1[i] == str2[i]) {
-            strF[i] = str2[i];
-        } else {
-            if (strlen(strF) == 0) {
-                strcpy(strF, "");
-            }
-            cont++;
-        }
+    if (strcmp(temp1, temp2) != 0) {
+        return "";
     }
 
-    cont = cont / strlen(strF);
-    printf("%d\n\n", cont);
+    int len1 = strlen(str1);
+    int len2 = strlen(str2);
+    int gcdLen = gcd(len1, len2);
 
-    strF[i] = '\0';
-    return strF;
+    strncpy(result, str1, gcdLen);
+    result[gcdLen] = '\0';
+
+    return result;
 }
 
 int main() {
+    char str1[] = "ABCDEFG";
+    char str2[] = "ABC";
 
-    char str1[] = "abcdef";
-    char str2[] = "abc";
-
-    printf("%s\n", gcdOfStrings(str1, str2));
+    printf("Saida: \"%s\"\n", gcdOfStrings(str1, str2));
 
     return 0;
 }
