@@ -1,15 +1,19 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 char *reverseVowels(char *s)
 {
-    int tam = strlen(s);
+    int cont = 0, tam = strlen(s);
 
-    for (int i = 0; i < tam; i++) 
+    char lower[tam];
+
+    for (int i = 0; i < tam; i++)
     {
-        switch (s[i])
+
+        switch (lower[i])
         {
-        case 'a' || 'A':
+        case 'a':
             printf("%d\n\n", i);
             break;
         case 'e':
@@ -25,7 +29,9 @@ char *reverseVowels(char *s)
             printf("%d\n\n", i);
             break;
         default:
-            printf("Nada encontrado");
+            lower[i] = tolower(s[i]);
+            i--;
+            cont = i;
             break;
         }
     }
@@ -34,7 +40,7 @@ char *reverseVowels(char *s)
 int main()
 {
 
-    char str[] = "aeiouA";
+    char str[] = "AaeiouA";
 
     reverseVowels(str);
 
