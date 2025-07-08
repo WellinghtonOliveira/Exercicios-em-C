@@ -1,0 +1,28 @@
+Dada uma string s, inverta apenas todas as vogais na string e retorne-a.
+
+As vogais são 'a', 'e', 'i', 'o', e 'u', e podem aparecer tanto em letras maiúsculas quanto minúsculas, mais de uma vez.
+
+ 
+
+Exemplo 1:
+
+Entrada: s = "IceCreAm"
+
+Saída: "AceCreIm"
+
+Explicação:
+
+As vogais em ssão ['I', 'e', 'e', 'A']. Ao inverter as vogais, s se torna "AceCreIm".
+
+Exemplo 2:
+
+Entrada: s = "leetcode"
+
+Saída: "leotcede"
+
+ 
+
+Restrições:
+
+1 <= s.length <= 3 * 105
+sconsistem em caracteres ASCII imprimíveis .
