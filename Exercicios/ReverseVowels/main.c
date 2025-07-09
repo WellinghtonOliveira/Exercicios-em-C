@@ -14,19 +14,14 @@ char *reverseVowels(char *s)
         switch (lower[i])
         {
         case 'a':
-            printf("%d\n\n", i);
             break;
         case 'e':
-            printf("%d\n\n", i);
             break;
         case 'i':
-            printf("%d\n\n", i);
             break;
         case 'o':
-            printf("%d\n\n", i);
             break;
         case 'u':
-            printf("%d\n\n", i);
             break;
         default:
             lower[i] = tolower(s[i]);
