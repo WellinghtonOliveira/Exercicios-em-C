@@ -27,6 +27,8 @@ char *reverseVowels(char *s)
             lower[i] = tolower(s[i]);
             i--;
             cont = i;
+
+            printf("%s", lower);
             break;
         }
     }
