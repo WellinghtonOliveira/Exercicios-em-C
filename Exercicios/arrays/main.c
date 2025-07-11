@@ -14,6 +14,7 @@ char* mergeAlternately(char* word1, char* word2) {
         return NULL;
     }
 
+    
     int i = 0, j = 0, k = 0;
  
     while (i < tamanhoWord1 || j < tamanhoWord2) {
