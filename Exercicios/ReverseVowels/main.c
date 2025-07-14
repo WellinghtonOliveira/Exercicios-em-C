@@ -2,34 +2,29 @@
 #include <string.h>
 #include <ctype.h>
 
+int is_vowel(char c) {
+    c = tolower(c);
+    return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+}
+
 char *reverseVowels(char *s)
 {
-    int cont = 0, tam = strlen(s) - 1;
+    int left = 0;
+    int right = strlen(s) - 1;
 
-    char lower[tam];
+    while (left < right) {
+        // Avança até encontrar uma vogal
+        while (left < right && !is_vowel(s[left])) left++;
+        // Regride até encontrar uma vogal
+        while (left < right && !is_vowel(s[right])) right--;
 
-    for (int i = 0; i < tam; i++)
-    {
-
-        switch (lower[i])
-        {
-        case 'a':
-            break;
-        case 'e':
-            break;
-        case 'i':
-            break;
-        case 'o':
-            break;
-        case 'u':
-            break;
-        default:
-            lower[i] = tolower(s[i]);
-            i--;
-            cont = i;
-
-            printf("%s", lower);
-            break;
+        // Troca as vogais
+        if (left < right) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            left++;
+            right--;
         }
     }
 }
