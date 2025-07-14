@@ -4,7 +4,7 @@
 
 char *reverseVowels(char *s)
 {
-    int cont = 0, tam = strlen(s);
+    int cont = 0, tam = strlen(s) - 1;
 
     char lower[tam];
 
