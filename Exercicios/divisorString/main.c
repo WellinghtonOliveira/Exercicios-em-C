@@ -10,7 +10,6 @@ int gcd(int a, int b) {
     }
     return a;
 }
-
 // Função principal que retorna o GCD das strings
 char* gcdOfStrings(char* str1, char* str2) {
     static char result[100]; // Resultado final
