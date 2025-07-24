@@ -9,6 +9,7 @@ int gcd(int a, int b) {
         a = temp;
     }
     return a;
+    
 }
 // Função principal que retorna o GCD das strings
 char* gcdOfStrings(char* str1, char* str2) {
