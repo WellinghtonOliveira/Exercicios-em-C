@@ -28,7 +28,7 @@ bool *kidsWithCandies(int *candies, int candiesSize, int extraCandies, int *retu
 
 int main()
 {
-
+    
     int tamanho;
     int candies[3] = {12, 1, 12};
     int extraCandie = 10;
