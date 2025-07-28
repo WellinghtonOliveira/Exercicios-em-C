@@ -1,0 +1,30 @@
+Você recebe duas strings word1e word2. Mescle as strings adicionando letras em ordem alternada, começando com word1. Se uma string for maior que a outra, anexe as letras adicionais ao final da string mesclada.
+
+Retorna a string mesclada.
+
+ 
+
+Exemplo 1:
+
+Entrada: palavra1 = "abc", palavra2 = "pqr"
+ Saída: "apbqcr"
+ Explicação:  A sequência mesclada será mesclada da seguinte forma:
+palavra1: abc
+palavra2: pqr
+mesclado: apbqcr
+Exemplo 2:
+
+Entrada: palavra1 = "ab", palavra2 = "pqrs"
+ Saída: "apbqrs"
+ Explicação:  Observe que, como palavra2 é mais longa, "rs" é acrescentado ao final.
+palavra1: ab
+palavra2: pqrs
+mesclado: apbqrs
+Exemplo 3:
+
+Entrada: palavra1 = "abcd", palavra2 = "pq"
+ Saída: "apbqcd"
+ Explicação:  Observe que, como palavra1 é mais longa, "cd" é acrescentado ao final.
+palavra1: abcd
+palavra2: pq
+mesclado: apbqcd
