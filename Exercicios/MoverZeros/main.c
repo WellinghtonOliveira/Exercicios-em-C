@@ -4,6 +4,11 @@ void moveZeroes(int* nums, int numsSize) {
 
     for (int i = 0; i < numsSize; i++)
     {
+        if (nums[i] == 0) 
+        {
+            printf("\naqui\n");
+        }
+        
         printf("%d", nums[i]);
     }
     
