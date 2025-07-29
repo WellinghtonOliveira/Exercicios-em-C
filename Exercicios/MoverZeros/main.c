@@ -1,7 +1,13 @@
 #include <stdio.h>
 
 void moveZeroes(int* nums, int numsSize) {
-    printf("%d", nums);
+
+    for (int i = 0; i < numsSize; i++)
+    {
+        printf("%d", nums[i]);
+    }
+    
+
     printf("\n%d", numsSize);
 }
 
