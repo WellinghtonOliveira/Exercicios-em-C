@@ -1,28 +1,32 @@
 #include <windows.h>
 
-// Variáveis globais
-int mouseX = 0, mouseY = 0;
+float ballX = 0, ballY = 0;
+float speed = 0.1f;
 
-// Prototipação
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-// Desenha a bolinha na tela
 void DrawBall(HWND hwnd) {
     HDC hdc = GetDC(hwnd);
 
     RECT rect;
     GetClientRect(hwnd, &rect);
-    FillRect(hdc, &rect, (HBRUSH)(COLOR_WINDOW)); // limpa fundo
 
-    HBRUSH brush = CreateSolidBrush(RGB(255, 0, 0)); // cor da bolinha
-    Ellipse(hdc, mouseX - 10, mouseY - 10, mouseX + 10, mouseY + 10); // desenha
-    DeleteObject(brush);
+    // Fundo transparente (cor-chave)
+    HBRUSH brushBack = CreateSolidBrush(RGB(0, 0, 0));
+    FillRect(hdc, &rect, brushBack);
+    DeleteObject(brushBack);
+
+    // Bolinha vermelha
+    HBRUSH brushBall = CreateSolidBrush(RGB(255, 0, 0));
+    SelectObject(hdc, brushBall);
+    Ellipse(hdc, (int)(ballX - 10), (int)(ballY - 10), (int)(ballX + 10), (int)(ballY + 10));
+    DeleteObject(brushBall);
 
     ReleaseDC(hwnd, hdc);
 }
 
-// Define a janela como plano de fundo
-void SetAsDesktopBackground(HWND hwnd) {
+// Mover a janela para plano de fundo, atrás dos ícones
+void SetAsWallpaper(HWND hwnd) {
     HWND progman = FindWindow("Progman", NULL);
     SendMessageTimeout(progman, 0x052C, 0, 0, SMTO_NORMAL, 1000, NULL);
 
@@ -40,69 +44,66 @@ void SetAsDesktopBackground(HWND hwnd) {
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                   LPSTR lpCmdLine, int nCmdShow)
+    LPSTR lpCmdLine, int nCmdShow)
 {
-    // Definir classe da janela
     WNDCLASS wc = {0};
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = "MouseFollower";
-    wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wc.lpszClassName = "WallpaperBall";
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground = NULL;
 
     RegisterClass(&wc);
 
-    // Criar janela invisível ao clique, sem bordas e transparente
     HWND hwnd = CreateWindowEx(
         WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT,
-        "MouseFollower", NULL,
+        "WallpaperBall", NULL,
         WS_POPUP,
         0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN),
         NULL, NULL, hInstance, NULL);
 
-    // Torna a janela transparente visualmente
-    SetLayeredWindowAttributes(hwnd, 0, 255, LWA_ALPHA);
+    SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 
-    // Enviar a janela para o desktop
-    SetAsDesktopBackground(hwnd);
+    // Chama a função para colocar a janela atrás dos ícones
+    SetAsWallpaper(hwnd);
 
-    // Exibir janela
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
 
-    // Loop de mensagens
+    POINT p;
+    GetCursorPos(&p);
+    ballX = p.x;
+    ballY = p.y;
+
+    SetTimer(hwnd, 1, 16, NULL);
+
     MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0)) {
+    while(GetMessage(&msg, NULL, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 
-    return msg.wParam;
+    return 0;
 }
 
-// Tratamento da janela
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch(msg) {
-        case WM_CREATE:
-            SetTimer(hwnd, 1, 16, NULL); // 60 FPS
+        case WM_TIMER: {
+            POINT p;
+            GetCursorPos(&p);
+            ballX += (p.x - ballX) * speed;
+            ballY += (p.y - ballY) * speed;
+            InvalidateRect(hwnd, NULL, FALSE);
             break;
-        case WM_TIMER:
-            {
-                POINT p;
-                GetCursorPos(&p);
-                mouseX = p.x;
-                mouseY = p.y;
-                InvalidateRect(hwnd, NULL, TRUE);
-            }
+        }
+        case WM_PAINT: {
+            PAINTSTRUCT ps;
+            BeginPaint(hwnd, &ps);
+            DrawBall(hwnd);
+            EndPaint(hwnd, &ps);
             break;
-        case WM_PAINT:
-            {
-                PAINTSTRUCT ps;
-                BeginPaint(hwnd, &ps);
-                DrawBall(hwnd);
-                EndPaint(hwnd, &ps);
-            }
-            break;
+        }
         case WM_DESTROY:
             KillTimer(hwnd, 1);
             PostQuitMessage(0);
@@ -110,6 +111,5 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         default:
             return DefWindowProc(hwnd, msg, wParam, lParam);
     }
-
     return 0;
 }
