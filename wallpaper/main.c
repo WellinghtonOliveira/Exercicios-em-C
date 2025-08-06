@@ -11,12 +11,12 @@ void DrawBall(HWND hwnd) {
     RECT rect;
     GetClientRect(hwnd, &rect);
 
-    // Fundo transparente (cor-chave)
+    // Apaga o fundo com cor transparente
     HBRUSH brushBack = CreateSolidBrush(RGB(0, 0, 0));
     FillRect(hdc, &rect, brushBack);
     DeleteObject(brushBack);
 
-    // Bolinha vermelha
+    // Desenha a bolinha vermelha
     HBRUSH brushBall = CreateSolidBrush(RGB(255, 0, 0));
     SelectObject(hdc, brushBall);
     Ellipse(hdc, (int)(ballX - 10), (int)(ballY - 10), (int)(ballX + 10), (int)(ballY + 10));
@@ -25,60 +25,40 @@ void DrawBall(HWND hwnd) {
     ReleaseDC(hwnd, hdc);
 }
 
-// Mover a janela para plano de fundo, atrás dos ícones
-void SetAsWallpaper(HWND hwnd) {
-    HWND progman = FindWindow("Progman", NULL);
-    SendMessageTimeout(progman, 0x052C, 0, 0, SMTO_NORMAL, 1000, NULL);
-
-    HWND workerw = NULL;
-    HWND defview = NULL;
-
-    do {
-        workerw = FindWindowEx(NULL, workerw, "WorkerW", NULL);
-        defview = FindWindowEx(workerw, NULL, "SHELLDLL_DefView", NULL);
-    } while (workerw != NULL && defview == NULL);
-
-    if (workerw != NULL) {
-        SetParent(hwnd, workerw);
-    }
-}
-
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-    LPSTR lpCmdLine, int nCmdShow)
-{
-    WNDCLASS wc = {0};
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = "WallpaperBall";
+    wc.lpszClassName = "BolaMouseClass";
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = NULL;
 
     RegisterClass(&wc);
 
     HWND hwnd = CreateWindowEx(
-        WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT,
-        "WallpaperBall", NULL,
+        WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW,
+        "BolaMouseClass", NULL,
         WS_POPUP,
         0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN),
-        NULL, NULL, hInstance, NULL);
+        NULL, NULL, hInstance, NULL
+    );
 
+    // Define a cor preta como transparente
     SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
-
-    // Chama a função para colocar a janela atrás dos ícones
-    SetAsWallpaper(hwnd);
 
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
 
+    // Inicializa posição da bolinha
     POINT p;
     GetCursorPos(&p);
     ballX = p.x;
     ballY = p.y;
 
-    SetTimer(hwnd, 1, 16, NULL);
+    SetTimer(hwnd, 1, 16, NULL);  // ~60 FPS
 
     MSG msg;
-    while(GetMessage(&msg, NULL, 0, 0)) {
+    while (GetMessage(&msg, NULL, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
@@ -86,9 +66,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     return 0;
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    switch(msg) {
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
         case WM_TIMER: {
             POINT p;
             GetCursorPos(&p);
