@@ -3,59 +3,116 @@
 float ballX = 0, ballY = 0;
 float speed = 0.1f;
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+// Cria uma janela atrás dos ícones do desktop
+HWND CreateDesktopLayerWindow(HINSTANCE hInstance);
 
+// Funções auxiliares
 void DrawBall(HWND hwnd) {
     HDC hdc = GetDC(hwnd);
-
     RECT rect;
     GetClientRect(hwnd, &rect);
 
-    // Apaga o fundo com cor transparente
-    HBRUSH brushBack = CreateSolidBrush(RGB(0, 0, 0));
-    FillRect(hdc, &rect, brushBack);
-    DeleteObject(brushBack);
+    // Limpa o fundo com transparência
+    HBRUSH bg = CreateSolidBrush(RGB(0, 0, 0));
+    FillRect(hdc, &rect, bg);
+    DeleteObject(bg);
 
     // Desenha a bolinha vermelha
-    HBRUSH brushBall = CreateSolidBrush(RGB(255, 0, 0));
-    SelectObject(hdc, brushBall);
+    HBRUSH brush = CreateSolidBrush(RGB(255, 0, 0));
+    SelectObject(hdc, brush);
     Ellipse(hdc, (int)(ballX - 10), (int)(ballY - 10), (int)(ballX + 10), (int)(ballY + 10));
-    DeleteObject(brushBall);
+    DeleteObject(brush);
 
     ReleaseDC(hwnd, hdc);
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    switch (msg) {
+    case WM_TIMER: {
+        POINT p;
+        GetCursorPos(&p);
+        ballX += (p.x - ballX) * speed;
+        ballY += (p.y - ballY) * speed;
+        InvalidateRect(hwnd, NULL, FALSE);
+        break;
+    }
+    case WM_PAINT: {
+        PAINTSTRUCT ps;
+        BeginPaint(hwnd, &ps);
+        DrawBall(hwnd);
+        EndPaint(hwnd, &ps);
+        break;
+    }
+    case WM_DESTROY:
+        KillTimer(hwnd, 1);
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
+    return 0;
+}
+
+// Cria uma janela de fundo real (atrás dos ícones)
+HWND CreateDesktopLayerWindow(HINSTANCE hInstance) {
+    // Envia mensagem para criar WorkerW
+    HWND progman = FindWindow("Progman", NULL);
+    SendMessageTimeout(progman, 0x052C, 0, 0, SMTO_NORMAL, 1000, NULL);
+
+    // Acha o WorkerW com SHELLDLL_DefView
+    HWND workerw = NULL;
+    HWND defview = NULL;
+
+    do {
+        workerw = FindWindowEx(NULL, workerw, "WorkerW", NULL);
+        defview = FindWindowEx(workerw, NULL, "SHELLDLL_DefView", NULL);
+    } while (workerw && !defview);
+
+    // A janela certa é a que NÃO contém o SHELLDLL_DefView
+    HWND target = NULL;
+    if (workerw)
+        target = workerw;
+    else
+        target = progman;
+
+    // Registra a classe da janela
     WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = "BolaMouseClass";
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.lpszClassName = "DesktopBallClass";
     wc.hbrBackground = NULL;
-
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     RegisterClass(&wc);
 
     HWND hwnd = CreateWindowEx(
-        WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW,
-        "BolaMouseClass", NULL,
+        WS_EX_LAYERED | WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE | WS_EX_TRANSPARENT,
+        "DesktopBallClass", NULL,
         WS_POPUP,
         0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN),
         NULL, NULL, hInstance, NULL
     );
 
-    // Define a cor preta como transparente
+    // Torna a cor preta transparente
     SetLayeredWindowAttributes(hwnd, RGB(0, 0, 0), 0, LWA_COLORKEY);
 
+    // Coloca como filho do WorkerW
+    SetParent(hwnd, target);
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
 
-    // Inicializa posição da bolinha
+    return hwnd;
+}
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    HWND hwnd = CreateDesktopLayerWindow(hInstance);
+
+    // Posição inicial
     POINT p;
     GetCursorPos(&p);
     ballX = p.x;
     ballY = p.y;
 
-    SetTimer(hwnd, 1, 16, NULL);  // ~60 FPS
+    SetTimer(hwnd, 1, 16, NULL); // 60 FPS
 
     MSG msg;
     while (GetMessage(&msg, NULL, 0, 0)) {
@@ -63,32 +120,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         DispatchMessage(&msg);
     }
 
-    return 0;
-}
-
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    switch (msg) {
-        case WM_TIMER: {
-            POINT p;
-            GetCursorPos(&p);
-            ballX += (p.x - ballX) * speed;
-            ballY += (p.y - ballY) * speed;
-            InvalidateRect(hwnd, NULL, FALSE);
-            break;
-        }
-        case WM_PAINT: {
-            PAINTSTRUCT ps;
-            BeginPaint(hwnd, &ps);
-            DrawBall(hwnd);
-            EndPaint(hwnd, &ps);
-            break;
-        }
-        case WM_DESTROY:
-            KillTimer(hwnd, 1);
-            PostQuitMessage(0);
-            break;
-        default:
-            return DefWindowProc(hwnd, msg, wParam, lParam);
-    }
     return 0;
 }
