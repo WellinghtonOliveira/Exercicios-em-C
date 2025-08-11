@@ -1,21 +1,17 @@
 #include <stdio.h>
 
 void moveZeroes(int* nums, int numsSize) {
-    int j = 0, array[numsSize];
+    int arrayTemp[numsSize];
+    int i, count = 0;
 
-    for (int i = 0; i < numsSize; i++)
+    for (i = 0; i < numsSize; i++) 
     {
-        if (nums[i] == 0) 
+        if (nums[i] == 0)
         {
-            array[j++] = nums[i];
-        }else
-        {
-            array[i] = nums[i];
+            arrayTemp[count++] = nums[i];
         }
-        
-        printf("\n%d", array[i]);
-    }    
-
+        printf("%d - ", arrayTemp[i]);
+    }
 }
 
 int main() {
