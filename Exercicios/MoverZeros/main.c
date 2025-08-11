@@ -1,23 +1,25 @@
 #include <stdio.h>
 
 void moveZeroes(int* nums, int numsSize) {
+    int j = 0, array[numsSize];
 
     for (int i = 0; i < numsSize; i++)
     {
         if (nums[i] == 0) 
         {
-            printf("\naqui\n");
+            array[j++] = nums[i];
+        }else
+        {
+            array[i] = nums[i];
         }
         
-        printf("%d", nums[i]);
-    }
-    
+        printf("\n%d", array[i]);
+    }    
 
-    printf("\n%d", numsSize);
 }
 
 int main() {
-    int nums[5] = { 0, 1, 2, 0, 3 };
+    int nums[5] = { 0, 1, 2, 0, 0 };
     
     moveZeroes(nums, 5);
     return 0;
