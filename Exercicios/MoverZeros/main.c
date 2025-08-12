@@ -2,21 +2,31 @@
 
 void moveZeroes(int *nums, int numsSize)
 {
-    int arrayTemp[numsSize];
-    int i, count = 0;
+    printf("\n\n");
+
+    int temp[numsSize];
+    int i, j = 0;
 
     for (i = 0; i < numsSize; i++)
     {
         if (nums[i] == 0)
         {
-            arrayTemp[count++] = nums[i];
+            temp[j++] = nums[i];
+            printf("%d  ", temp[j - 1]);
         }
-        else
-        {
-            arrayTemp[i] = 1;
-        }
-        printf("%d\n", arrayTemp[i]);
     }
+
+    while (j < numsSize)
+    {
+        temp[j++] = 1;
+    }
+    
+    for (i = 0; i < numsSize; i++) 
+    {
+        printf("%d  ", temp[i - 1]);
+    }
+
+    printf("\n\n");
 }
 
 int main()
