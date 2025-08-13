@@ -2,36 +2,34 @@
 
 void moveZeroes(int *nums, int numsSize)
 {
-    printf("\n\n");
+    int lastNonZeroFoundAt = 0;
 
-    int temp[numsSize];
-    int i, j = 0;
-
-    for (i = 0; i < numsSize; i++)
+    // Mover todos os elementos diferentes de zero para o início
+    for (int i = 0; i < numsSize; i++)
     {
-        if (nums[i] == 0)
+        if (nums[i] != 0)
         {
-            temp[j++] = nums[i];
-            printf("%d  ", temp[j - 1]);
+            nums[lastNonZeroFoundAt++] = nums[i];
         }
     }
 
-    while (j < numsSize)
+    // Preencher o restante com zeros
+    for (int i = lastNonZeroFoundAt; i < numsSize; i++)
     {
-        temp[j++] = 1;
-    }
-    
-    for (i = 0; i < numsSize; i++) 
-    {
-        printf("%d  ", temp[i - 1]);
+        nums[i] = 0;
     }
 
-    printf("\n\n");
+    // Imprimir resultado
+    for (int i = 0; i < numsSize; i++)
+    {
+        printf("%d ", nums[i]);
+    }
+    printf("\n");
 }
 
 int main()
 {
-    int nums[5] = {0, 1, 2, 0, 0};
+    int nums[5] = {0, 1, 0, 3, 12};
 
     moveZeroes(nums, 5);
     return 0;
