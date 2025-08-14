@@ -28,7 +28,8 @@ bool isSubsequence(char *s, char *t)
         }
     }
 
-    return k == tam_s ? printf("%s", "true") : printf("%s", "false");
+    // return k == tam_s ? printf("%s", "true") : printf("%s", "false");
+    return k == tam_s ? true : false;
 }
 
 int main()
