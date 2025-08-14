@@ -10,5 +10,6 @@ Entrada: s = "abc", t = "ahbgdc"
  Saída: verdadeiro
 Exemplo 2:
 
+
 Entrada: s = "axc", t = "ahbgdc"
  Saída: falso
