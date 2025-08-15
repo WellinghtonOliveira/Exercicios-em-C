@@ -6,6 +6,7 @@ Encontre uma submatriz contígua cujo comprimento seja igual ao k que possui o v
 
 Exemplo 1:
 
+
 Entrada: nums = [1,12,-5,-6,50,3], k = 4
  Saída: 12,75000
  Explicação: A média máxima é (12 - 5 - 6 + 50) / 4 = 51 / 4 = 12,75
