@@ -4,7 +4,7 @@
 double findMaxAverage(int *nums, int numsSize, int k)
 {
     int tam = numsSize - 1;
-    int i, a = 1, c = 0, j = 0;
+    int i, a = 1, c = 1, j = 0;
     int *numeros = NULL;
     int quantia = 0;
 
@@ -13,18 +13,21 @@ double findMaxAverage(int *nums, int numsSize, int k)
     for (i = 0; i < tam + 1; i++)
     {
         q += nums[j];
-        if ((c + 1) == k)
+        
+        printf("%.2f  ", q);
+
+        if (c == k)
         {
             float media = q / k;
 
             quantia++;
             numeros = realloc(numeros, quantia * sizeof(int));
 
-            printf("%d  ", i);
-            
-            //numeros[quantia - 1] = algum valor
+            // numeros[quantia - 1] = algum valor
             q = 0;
-            c = 0;
+            c = 1;
+            j = a;
+            a++;
         }
 
         c++;
