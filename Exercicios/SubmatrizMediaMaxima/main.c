@@ -14,7 +14,7 @@ double findMaxAverage(int *nums, int numsSize, int k)
     {
         q += nums[j];
         
-        printf("%.2f  ", q);
+        printf("%d  ", nums[j]);
 
         if (c == k)
         {
