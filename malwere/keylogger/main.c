@@ -16,12 +16,12 @@ int main()
         if (_kbhit())
         {
             tecla = _getch();
-            printf("%d", count);
-
+            
             if (tecla == 8)
             {
                 palavra[count--] = '\0';
               //  system("cls");
+                printf("%d\n", count);
 
                 continue;
             }
