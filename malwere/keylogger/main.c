@@ -17,29 +17,38 @@ int main()
         {
             tecla = _getch();
 
-            if (tecla == ' ')
+            if (tecla == 8)
             {
-                system("cls");
-
-                // Pulando uma linha no arquivo log txt
-                palavra[count++] = '\n';
-
-                // Salavando arquivo
-                fptr = fopen("logs.txt", "a");
-                fprintf(fptr, palavra);
-                fclose(fptr);
-             
-                palavra[0] = '\0';
-                count = 0;
-                continue;
+                printf("\n%d\n", count);
+                palavra[count - 1] = '\0';
+                printf("\n%d\n", count);
             }
-            
+
+            if (tecla == 32 || tecla == 13)
+            {
+                if (palavra[0] != '\0')
+                {
+                    system("cls");
+
+                    // Finalizando o arquivo log txt
+                    palavra[count] = '\0';
+
+                    // Salavando arquivo
+                    fptr = fopen("logs.txt", "a");
+                    fprintf(fptr, "%s\n", palavra);
+                    fclose(fptr);
+
+                    palavra[0] = '\0';
+                    count = 0;
+                    continue;
+                }
+            }
+
+            printf("%c  ", tecla);
             palavra[count++] = tecla;
 
             if (tecla == 27)
-                {
                 break;
-            }
         }
     }
 
