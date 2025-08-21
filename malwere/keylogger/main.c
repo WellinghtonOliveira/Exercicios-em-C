@@ -19,9 +19,10 @@ int main()
 
             if (tecla == 8)
             {
-                if (count <= 0) continue;
+                if (count <= 0  ) continue;
                 palavra[count--] = '\0';
-                
+                system("cls");
+                printf("%s", palavra);
                 continue;
             }
 
@@ -29,7 +30,7 @@ int main()
 
             if (tecla == 32 || tecla == 13)
             {
-                if (palavra[0] != '\0')
+                if (count > 0)
                 {
                     system("cls");
 
@@ -47,7 +48,6 @@ int main()
                 continue;
             }
 
-            // printf("%c", tecla);
             //  Salvando as teclas e montando a palavra
             palavra[count++] = tecla;
 
