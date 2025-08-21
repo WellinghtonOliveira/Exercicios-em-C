@@ -16,13 +16,12 @@ int main()
         if (_kbhit())
         {
             tecla = _getch();
-            
+
             if (tecla == 8)
             {
+                if (count <= 0) continue;
                 palavra[count--] = '\0';
-              //  system("cls");
-                printf("%d\n", count);
-
+                
                 continue;
             }
 
@@ -48,11 +47,13 @@ int main()
                 continue;
             }
 
-            //printf("%c", tecla);
-            // Salvando as teclas e montando a palavra
+            // printf("%c", tecla);
+            //  Salvando as teclas e montando a palavra
             palavra[count++] = tecla;
 
-            if (tecla == 27) break;
+            printf("%c", tecla);
+            if (tecla == 27)
+                break;
         }
     }
 
