@@ -7,7 +7,7 @@ int main()
 
     char palavra[100];
     int count = 0;
-//TODO ofuscação  programas padroes
+    
     printf("teste");
     while (1)
     {
