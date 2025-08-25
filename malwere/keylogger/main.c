@@ -8,7 +8,8 @@ int main()
     char palavra[100];
     int count = 0;
     
-    printf("teste");
+    printf("Precione qualquer tecla");
+
     while (1)
     {
         for (int vk = 0x08; vk <= 0xFE; vk++)
@@ -25,12 +26,12 @@ int main()
                 char keyName[128];
                 if (GetKeyNameText(lParam, keyName, sizeof(keyName)) > 0)
                 {
-
                     if (scanCode == 14)
                     {
                         if (count <= 0) continue;
-
+                        system("cls");
                         palavra[count--] = '\0';
+                        printf("%s", palavra);
                         continue;
                     }
                     
@@ -55,9 +56,9 @@ int main()
                     }
 
                     //  Salvando as teclas e montando a palavra
-                    palavra[count++] = keyName[0];
-                    printf("%c", keyName[0]);
-                    //printf("Tecla: %s\n", keyName[0]);
+                    palavra[count++] = lParam;
+                    system("cls");
+                    printf("%s", lParam);
 
                     if (scanCode == 1) break;
                 }
@@ -67,7 +68,7 @@ int main()
                 }
 
                 // Evita repetir rápido demais
-                Sleep(100);
+                Sleep(150);
             }
         }
     }
