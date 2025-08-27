@@ -32,7 +32,8 @@ int main()
                     {
                         if (count > 0)
                         {
-                            palavra[count--] = '\0';
+                            count--;
+                            palavra[count] = '\0';
                         }
                         system("cls");
                         printf("%s", palavra);
@@ -61,21 +62,24 @@ int main()
                     }
 
                     //  Salvando as teclas e montando a palavra
-                    palavra[count++] = lParam;
+                    if ((vk >= '0' && vk <= '9') || (vk >= 'A' && vk <= 'Z'))
+                    {
+                        if (count < sizeof(palavra) - 1)
+                        {
+                            palavra[count++] = (char)vk;
+                            palavra[count] = '\0';
+                        }
+                    }
                     system("cls");
-                    printf("%s", lParam);
+                    printf("%s", palavra);
 
                     if (scanCode == 1) break;
                 }
-                else
-                {
-                    printf("Tecla: VK %d\n", vk);
-                }
-
-                // Evita repetir rápido demais
-                Sleep(150);
             }
         }
+        
+        
+        Sleep(30);
     }
     return 0;
 }
