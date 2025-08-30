@@ -21,7 +21,7 @@ bool isSubsequence(char *s, char *t)
     }
 
     for (i = 0; i < tam_s; i++)
-    {
+    { 
         if (tempCopy[i] == s[i])
         {
             k++;
