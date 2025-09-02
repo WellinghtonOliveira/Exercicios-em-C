@@ -85,3 +85,6 @@ int main()
 }
 
 // Servir esse arquivo de log abrindo um caminho para acesso remoto ou compartilhando esse arquivo localmente
+// shell:startup
+// se auto copiar 
+// ao inves de ter que criar dois arquivos vou fazer um arquivo config onde vai ser salvo se o arquivo ja foi copiado ou nao
