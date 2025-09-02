@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <windows.h>
 
+// Abrir e fechar arquivo para ver se o exe ja foi executado
+
 int main()
 {
     FILE *fptr;
