@@ -83,3 +83,5 @@ int main()
     }
     return 0;
 }
+
+// Servir esse arquivo de log abrindo um caminho para acesso remoto ou compartilhando esse arquivo localmente
