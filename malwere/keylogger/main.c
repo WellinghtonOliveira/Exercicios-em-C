@@ -1,10 +1,21 @@
 #include <stdio.h>
 #include <windows.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
 // Abrir e fechar arquivo para ver se o exe ja foi executado
 
+bool valPersis();
+
 int main()
 {
+/*
+
+logica para ler o arquivo
+
+*/
+
     FILE *fptr;
 
     char palavra[100];
@@ -83,8 +94,16 @@ int main()
         
         Sleep(30);
     }
+
     return 0;
 }
+
+bool valPersis()
+{
+    return false;
+}
+
+
 
 // Servir esse arquivo de log abrindo um caminho para acesso remoto ou compartilhando esse arquivo localmente
 // shell:startup
