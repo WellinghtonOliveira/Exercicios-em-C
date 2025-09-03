@@ -16,6 +16,8 @@ logica para ler o arquivo
 
 */
 
+    valPersis();
+
     FILE *fptr;
 
     char palavra[100];
@@ -100,6 +102,20 @@ logica para ler o arquivo
 
 bool valPersis()
 {
+
+    FILE *varsConf;
+
+    char chave[50], valor[50];
+    int VerdOuFal = 0;// Verdadeiro ou falso
+    
+    varsConf = fopen("config.cfg", "r");
+    if (!varsConf)
+    {
+        varsConf = fopen("config.cfg", "w");
+        fprintf(varsConf, "pos=0");// pos == true
+        fclose(varsConf);
+    }
+
     return false;
 }
 
