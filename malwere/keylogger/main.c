@@ -81,7 +81,7 @@ int main()
                         system("cls");
                         printf("%s", palavra);
 
-                        if (scanCode == 1) return 0;
+                        //if (scanCode == VK_ESCAPE) return 0;
                     }
                 }
             }
