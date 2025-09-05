@@ -14,8 +14,6 @@ int main()
     char palavra[100];
     int count = 0;
 
-    printf("Precione qualquer tecla...\n\n");
-
     if (valPersis())
     {
         while (1)
@@ -120,6 +118,7 @@ bool valPersis()
         fprintf(varsConf, "pos=1\n");
         fclose(varsConf);
 
+        remove("config.cfg");
         return false; // primeira execução
     }
     else
