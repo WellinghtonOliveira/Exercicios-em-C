@@ -1,48 +1,29 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-double findMaxAverage(int *nums, int numsSize, int k)
-{
-    int tam = numsSize - 1;
-    int i, a = 1, c = 1, j = 0;
-    int *numeros = NULL;
-    int quantia = 0;
-
-    float q = 0;
-
-    for (i = 0; i < tam + 1; i++)
-    {
-        q += nums[j];
-        
-        printf("%d  ", nums[j]);
-
-        if (c == k)
-        {
-            float media = q / k;
-
-            quantia++;
-            numeros = realloc(numeros, quantia * sizeof(int));
-
-            // numeros[quantia - 1] = algum valor
-            q = 0;
-            c = 1;
-            j = a;
-            a++;
-        }
-
-        c++;
-        j++;
+double findMaxAverage(int *nums, int numsSize, int k) {
+    double soma = 0;
+    for (int i = 0; i < k; i++) {
+        soma += nums[i];
     }
 
-    free(numeros);
-    return 0;
+    double maxSoma = soma;
+
+    for (int i = k; i < numsSize; i++) {
+        soma += nums[i] - nums[i - k];  // desliza a janela
+        if (soma > maxSoma) {
+            maxSoma = soma;
+        }
+    }
+
+    return maxSoma / k;
 }
 
-int main()
-{
-    int nums[6] = {1, 12, -5, -6, 50, 3}, k = 4;
+int main() {
+    int nums[6] = {1, 12, -5, -6, 50, 3};
+    int k = 4;
 
-    findMaxAverage(nums, 6, k);
+    double resultado = findMaxAverage(nums, 6, k);
+    printf("%.5f\n", resultado);
 
     return 0;
 }
