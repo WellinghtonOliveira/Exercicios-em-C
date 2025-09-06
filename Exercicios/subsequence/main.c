@@ -37,7 +37,7 @@ int main()
 
     char s[] = "", p[] = "ahbgdc";
 
-    isSubsequence(s, p);
+    isSubsequence(s, p) ? printf("true\n") : printf("false\n");
 
     return 0;
 }
