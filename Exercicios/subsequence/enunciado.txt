@@ -1,4 +1,4 @@
-Dadas duas strings se t, retorne truese sfor uma subsequência de t, ou falsecaso contrário .
+Dadas duas strings s e t, retorne true se s for uma subsequência de t, ou false caso contrário .
 
 Uma subsequência de uma string é uma nova string que é formada a partir da string original pela exclusão de alguns (pode ser nenhum) caracteres sem perturbar as posições relativas dos caracteres restantes. (ou seja, "ace"é uma subsequência de enquanto não é)."abcde""aec"
 
