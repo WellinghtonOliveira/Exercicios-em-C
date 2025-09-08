@@ -1,0 +1,13 @@
+Um motociclista está fazendo uma viagem de carro. A viagem consiste em n + 1 pontos em diferentes altitudes. O motociclista inicia a viagem em um ponto 0 com altitude igual a 0.
+Você recebe uma matriz de inteiros gain de comprimento nonde gain[i] é o ganho líquido de altitude entre os pontos i e i + 1 para todos ( 0 <= i < n). Retorna a maior altitude de um ponto.
+ 
+
+Exemplo 1:
+Entrada: ganho = [-5,1,5,0,-7]
+ Saída: 1
+ Explicação: As altitudes são [0,-5,-4,1,1,-6]. A maior é 1.
+
+Exemplo 2:
+Entrada: ganho = [-4,-3,-2,-1,4,3,2]
+ Saída: 0
+ Explicação: As altitudes são [0,-4,-7,-9,-10,-6,-3,-1]. A maior é 0.
