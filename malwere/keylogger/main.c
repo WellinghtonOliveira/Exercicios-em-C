@@ -121,13 +121,18 @@ bool valPersis()
         if (fscanf(varsConf, "%[^=]=%d", chave, &valor) == 2)
         {
             fclose(varsConf);
-            if (valor == 0)
+            if (valor == 1)
             {
-                
+                snprintf(newPath, MAX_PATH, "%s\\config.cfg", startupPath);
+                if (strcmp(currentPath, newPath) != 0)
+                {
+                    CopyFile(currentPath, newPath, FALSE);
+                }
+
+                remove("config.cfg");
             }
         }
 
-        //remove("config.cfg");
         return false; // primeira execução
     }
     else
@@ -136,7 +141,8 @@ bool valPersis()
         if (fscanf(varsConf, "%[^=]=%d", chave, &valor) == 2)
         {
             fclose(varsConf);
-            if (valor == 1) return true;
+            if (valor == 1)
+                return true;
         }
         fclose(varsConf);
     }
