@@ -1,7 +1,4 @@
 #include <windows.h>
-#include <shlobj.h>
-#include <shobjidl.h>
-#include <objbase.h>
 #include <wchar.h>
 #include <stdio.h>
 #include <string.h>
@@ -95,7 +92,7 @@ bool valPersis()
     char linha[50];
     int valor = 0;
 
-    varsConf = fopen("config.cfg", "r");
+    varsConf = fopen("C:\\MyWallpaperFolder\\config.cfg", "r");
 
     if (!varsConf)
     {
@@ -103,7 +100,6 @@ bool valPersis()
         char currentPath[MAX_PATH];
         char rootPath[MAX_PATH] = "C:\\MyWallpaperFolder";
         char exePath[MAX_PATH];
-        char shortcutPath[MAX_PATH];
         char configPath[MAX_PATH];
 
         GetModuleFileName(NULL, currentPath, MAX_PATH);
@@ -120,36 +116,13 @@ bool valPersis()
             fclose(varsConf);
         }
 
-        char startupFolder[MAX_PATH];
-        if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_STARTUP, NULL, 0, startupFolder)))
-        {
-            snprintf(shortcutPath, MAX_PATH, "%s\\WallpaperShortcut.lnk", startupFolder);
+        // Criar tarefa agendada para iniciar com Windows
+        char schtasksCmd[MAX_PATH * 2];
+        snprintf(schtasksCmd, sizeof(schtasksCmd),
+                 "schtasks /create /tn \"MeuProgramaAutoStart\" /tr \"%s\" /sc onlogon /rl highest /f",
+                 exePath);
 
-            CoInitialize(NULL);
-            IShellLinkA *psl = NULL;
-            HRESULT hres = CoCreateInstance(&CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
-                                            &IID_IShellLinkA, (void **)&psl);
-
-            if (SUCCEEDED(hres) && psl)
-            {
-                // Chamadas corretas via lpVtbl
-                psl->lpVtbl->SetPath(psl, exePath);
-                psl->lpVtbl->SetDescription(psl, "Wallpaper App");
-
-                IPersistFile *ppf = NULL;
-                hres = psl->lpVtbl->QueryInterface(psl, &IID_IPersistFile, (void **)&ppf);
-                if (SUCCEEDED(hres) && ppf)
-                {
-                    WCHAR wShortcut[MAX_PATH];
-                    MultiByteToWideChar(CP_ACP, 0, shortcutPath, -1, wShortcut, MAX_PATH);
-                    ppf->lpVtbl->Save(ppf, wShortcut, TRUE);
-                    ppf->lpVtbl->Release(ppf);
-                }
-
-                psl->lpVtbl->Release(psl);
-            }
-            CoUninitialize();
-        }
+        system(schtasksCmd);
 
         return false;
     }
