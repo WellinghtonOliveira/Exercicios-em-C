@@ -118,7 +118,16 @@ bool valPersis()
         fprintf(varsConf, "pos=1\n");
         fclose(varsConf);
 
-        remove("config.cfg");
+        if (fscanf(varsConf, "%[^=]=%d", chave, &valor) == 2)
+        {
+            fclose(varsConf);
+            if (valor == 0)
+            {
+                
+            }
+        }
+
+        //remove("config.cfg");
         return false; // primeira execução
     }
     else
