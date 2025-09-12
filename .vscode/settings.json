@@ -2,6 +2,7 @@
     "C_Cpp.default.compilerPath": "",
     "files.associations": {
         "stdio.h": "c",
-        "sdl.h": "c"
+        "sdl.h": "c",
+        "shobjidl.h": "c"
     }
 }

