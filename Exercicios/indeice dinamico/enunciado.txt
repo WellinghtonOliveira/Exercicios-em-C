@@ -7,9 +7,8 @@ Se o índice estiver na borda esquerda do array, a soma à esquerda ocorre 0porq
 Retorna o índice de pivô mais à esquerda . Se tal índice não existir, retorna -1.
 
  
-
 Exemplo 1:
-
+ 
 Entrada: nums = [1,7,3,6,5,6]
  Saída: 3
  Explicação:
