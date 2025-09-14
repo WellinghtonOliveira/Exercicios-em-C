@@ -4,7 +4,6 @@ int pivotIndex();
 
 int main() {
 
-    printf("%d", pivotIndex(10, 1));
 
     return 0;
 }
