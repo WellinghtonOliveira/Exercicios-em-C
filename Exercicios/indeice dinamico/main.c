@@ -11,3 +11,4 @@ int main() {
 int pivotIndex(int* nums, int numsSize) {
     
 }
+
