@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+// TODO daria para colocar essa variavel no arquivo config.cfg, pois conseguiria pegar esse caminho em outros arquivos 
 const char *BASE_FOLDER = "C:\\teste";  
 
 bool valPersis();
