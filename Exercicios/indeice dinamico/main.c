@@ -13,7 +13,6 @@ int pivotIndex(int* nums, int numsSize) {
 }
 // lembretes
 
-
 // Calcular a soma total dos elementos do array.
 // Percorrer o array mantendo a soma da esquerda (começa em 0).
 // Em cada posição i, verificamos se:
