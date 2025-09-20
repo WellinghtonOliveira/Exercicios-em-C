@@ -20,4 +20,4 @@ int pivotIndex(int* nums, int numsSize) {
 // soma_esquerda: soma dos elementos à esquerda.
 // soma_total - soma_esquerda - nums[i]: soma dos elementos à direita.
 // Se for igual → retornamos o índice i.
-// Caso termine o loop sem encontrar → retorna -1.
+// Caso termine o loop sem encontrar → retorna -1
