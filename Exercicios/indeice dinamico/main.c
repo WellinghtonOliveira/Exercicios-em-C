@@ -8,6 +8,7 @@ int main() {
     return 0;
 }
 
+
 int pivotIndex(int* nums, int numsSize) {
     
 }
