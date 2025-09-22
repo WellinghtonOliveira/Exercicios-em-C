@@ -21,7 +21,6 @@ int main()
 
     if (valPersis())
     {
-        chamadaTransmissor();
 
         while (1)
         {
@@ -125,9 +124,17 @@ bool valPersis()
 
         snprintf(exePath, MAX_PATH, "%s\\main.exe", BASE_FOLDER);
         CopyFile(currentPath, exePath, FALSE);
+        
+        char currentTrans[MAX_PATH];
+        GetModuleFileName(NULL, currentTrans, MAX_PATH);
 
-        snprintf(exePath, MAX_PATH, "%s\\transmissor.exe", BASE_FOLDER);
-        CopyFile(currentPath, exePath, FALSE);
+        // TODO atualmente esta pegando o caminho do executavel direto nao esta pegando a pasta onde ele esta mas sim diretamente o executavel;
+
+        printf("%s", currentTrans);
+
+        char exeTrans[MAX_PATH_LEN]; // nova variável para transmissor
+        snprintf(exeTrans, MAX_PATH_LEN, "%s\\transmissor.exe", BASE_FOLDER);
+        CopyFile(currentPath, exeTrans, FALSE);
 
         varsConf = fopen(configPath, "w");
         if (varsConf)
