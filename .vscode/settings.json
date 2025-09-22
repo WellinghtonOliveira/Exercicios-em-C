@@ -3,6 +3,9 @@
     "files.associations": {
         "stdio.h": "c",
         "sdl.h": "c",
-        "shobjidl.h": "c"
+        "shobjidl.h": "c",
+        "ctype.h": "c",
+        "string.h": "c",
+        "winsock2.h": "c"
     }
 }
