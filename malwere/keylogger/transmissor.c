@@ -1,3 +1,22 @@
+#include <stdio.h>
+#include <string.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
+#define PORT 5001
+#define BUFFER_SIZE 2048
+#define EXPECTED_TOKEN "256dc29b97c147d8769a61df36bfc67f52ed4fba4e4523bef7730df01c10c8a1828ea877826e889112bf6a14da88555bc552ec60e510ff3233b2f54774e41445"
+#define FILE_TO_SEND "logs.txt"
+
+void transmissorLog();
+
+int main() {
+
+    transmissorLog();
+    
+    return 0;
+}
+
 void transmissorLog() {
     WSADATA wsaData;
     WSAStartup(MAKEWORD(2,2), &wsaData);
@@ -64,3 +83,5 @@ void transmissorLog() {
     closesocket(sockfd);
     WSACleanup();
 }
+
+// gcc .\transmissor.c -o .\transmissor.exe -lws2_32 -Wall -Wextra -O2

