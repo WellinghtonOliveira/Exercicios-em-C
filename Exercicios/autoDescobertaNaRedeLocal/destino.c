@@ -78,5 +78,3 @@ int main() {
     WSACleanup();
     return 0;
 }
-
-// TODO daria tambem para enviar os dados para um servidor backend usando node
