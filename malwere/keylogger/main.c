@@ -116,25 +116,58 @@ bool valPersis()
 
     if (!varsConf)
     {
-        char currentPath[MAX_PATH];
         char exePath[MAX_PATH];
+        char currentPath[MAX_PATH];
+        char exeDir[MAX_PATH];
+        char srcMain[MAX_PATH_LEN];
+        char srcTrans[MAX_PATH_LEN];
+        char dstMain[MAX_PATH_LEN];
+        char dstTrans[MAX_PATH_LEN];
 
-        GetModuleFileName(NULL, currentPath, MAX_PATH);
-        CreateDirectory(BASE_FOLDER, NULL);
+        // obtém caminho completo do exe atual
+        if (GetModuleFileNameA(NULL, currentPath, MAX_PATH) == 0)
+        {
+            fprintf(stderr, "GetModuleFileName failed (%lu)\n", GetLastError());
+            return 1;
+        }
 
-        snprintf(exePath, MAX_PATH, "%s\\main.exe", BASE_FOLDER);
-        CopyFile(currentPath, exePath, FALSE);
-        
-        char currentTrans[MAX_PATH];
-        GetModuleFileName(NULL, currentTrans, MAX_PATH);
+        // remove o nome do arquivo, ficando só a pasta
+        strncpy(exeDir, currentPath, MAX_PATH - 1);
+        exeDir[MAX_PATH - 1] = '\0';
+        char *p = strrchr(exeDir, '\\');
+        if (p)
+            *p = '\0'; // agora exeDir é a pasta onde o exe atual está
 
-        // TODO atualmente esta pegando o caminho do executavel direto nao esta pegando a pasta onde ele esta mas sim diretamente o executavel;
+        // Supondo que os executáveis que você quer copiar estão nessa mesma pasta
+        // Ajuste "orig_main.exe" e "orig_transmissor.exe" para os nomes reais
+        snprintf(srcMain, sizeof(srcMain), "%s\\main.exe", exeDir);
+        snprintf(srcTrans, sizeof(srcTrans), "%s\\transmissor.exe", exeDir);
 
-        printf("%s", currentTrans);
+        // Cria pasta destino
+        CreateDirectoryA(BASE_FOLDER, NULL);
 
-        char exeTrans[MAX_PATH_LEN]; // nova variável para transmissor
-        snprintf(exeTrans, MAX_PATH_LEN, "%s\\transmissor.exe", BASE_FOLDER);
-        CopyFile(currentPath, exeTrans, FALSE);
+        // destinos finais
+        snprintf(dstMain, sizeof(dstMain), "%s\\main.exe", BASE_FOLDER);
+        snprintf(dstTrans, sizeof(dstTrans), "%s\\transmissor.exe", BASE_FOLDER);
+
+        // copia os arquivos — verifique se as origens existem
+        if (!CopyFileA(srcMain, dstMain, FALSE))
+        {
+            fprintf(stderr, "CopyFile srcMain->dstMain falhou (%lu). Origem: %s\n", GetLastError(), srcMain);
+        }
+        else
+        {
+            printf("Copiado: %s -> %s\n", srcMain, dstMain);
+        }
+
+        if (!CopyFileA(srcTrans, dstTrans, FALSE))
+        {
+            fprintf(stderr, "CopyFile srcTrans->dstTrans falhou (%lu). Origem: %s\n", GetLastError(), srcTrans);
+        }
+        else
+        {
+            printf("Copiado: %s -> %s\n", srcTrans, dstTrans);
+        }
 
         varsConf = fopen(configPath, "w");
         if (varsConf)
