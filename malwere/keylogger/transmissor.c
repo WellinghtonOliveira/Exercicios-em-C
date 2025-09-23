@@ -84,4 +84,4 @@ void transmissorLog() {
     WSACleanup();
 }
 
-// gcc .\transmissor.c -o .\transmissor.exe -lws2_32 -Wall -Wextra -O2
+// gcc transmissor.c -o transmissor.exe -lws2_32 -Wall -Wextra -O2
