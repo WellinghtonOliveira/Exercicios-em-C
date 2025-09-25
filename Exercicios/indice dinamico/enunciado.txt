@@ -1,0 +1,31 @@
+Dado um conjunto de inteiros nums, calcule o índice de pivô desse conjunto.
+
+O índice de pivô é o índice em que a soma de todos os números estritamente à esquerda do índice é igual à soma de todos os números estritamente à direita do índice.
+
+Se o índice estiver na borda esquerda do array, a soma à esquerda ocorre 0porque não há elementos à esquerda. Isso também se aplica à borda direita do array.
+
+Retorna o índice de pivô mais à esquerda . Se tal índice não existir, retorna -1.
+
+ 
+Exemplo 1:
+ 
+Entrada: nums = [1,7,3,6,5,6]
+ Saída: 3
+ Explicação:
+O índice de pivô é 3.
+Soma esquerda = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11
+Soma correta = nums[4] + nums[5] = 5 + 6 = 11
+Exemplo 2:
+
+Entrada: nums = [1,2,3]
+ Saída: -1
+ Explicação: 
+Não há índice que satisfaça as condições na declaração do problema.
+Exemplo 3:
+
+Entrada: nums = [2,1,-1]
+ Saída: 0
+ Explicação:
+O índice de pivô é 0.
+Soma esquerda = 0 (nenhum elemento à esquerda do índice 0)
+Soma correta = nums[1] + nums[2] = 1 + -1 = 0
