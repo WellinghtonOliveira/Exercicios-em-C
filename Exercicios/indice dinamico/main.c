@@ -12,7 +12,7 @@ int main() {
 int pivotIndex(int* nums, int numsSize) {
     
 }
-// lembretes
+// lembretes.
 
 // Calcular a soma total dos elementos do array.
 // Percorrer o array mantendo a soma da esquerda (começa em 0).
