@@ -10,6 +10,15 @@
 int x, y, fruitX, fruitY, score;
 int tailX[100], tailY[100], nTail;
 int gameOver;
+
+// velocidade da cobra
+int snakeDelay = 120; // ms entre movimentos
+
+// controle do FPS
+double lastTime;
+int frames = 0;
+double fps = 0;
+
 enum eDirection
 {
     STOP = 0,
@@ -20,6 +29,15 @@ enum eDirection
 };
 enum eDirection dir;
 
+// reposiciona cursor no terminal (sem piscar)
+void gotoxy(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
 void setup()
 {
     gameOver = 0;
@@ -29,12 +47,13 @@ void setup()
     fruitX = rand() % WIDTH;
     fruitY = rand() % HEIGHT;
     score = 0;
+    nTail = 0;
+    lastTime = (double)clock() / CLOCKS_PER_SEC;
 }
 
 void draw()
 {
-    Sleep(200);
-    system("cls");
+    gotoxy(0, 0); // volta pro canto superior
     for (int i = 0; i < WIDTH + 2; i++)
         printf("#");
     printf("\n");
@@ -58,6 +77,7 @@ void draw()
                     {
                         printf("o");
                         print = 1;
+                        break;
                     }
                 }
                 if (!print)
@@ -71,7 +91,7 @@ void draw()
 
     for (int i = 0; i < WIDTH + 2; i++)
         printf("#");
-    printf("\nScore: %d\n", score);
+    printf("\nScore: %d   FPS: %.2f\n", score, fps);
 }
 
 void input()
@@ -81,16 +101,16 @@ void input()
         switch (_getch())
         {
         case 'a':
-            dir = LEFT;
+            if (dir != RIGHT) dir = LEFT;
             break;
         case 'd':
-            dir = RIGHT;
+            if (dir != LEFT) dir = RIGHT;
             break;
         case 'w':
-            dir = UP;
+            if (dir != DOWN) dir = UP;
             break;
         case 's':
-            dir = DOWN;
+            if (dir != UP) dir = DOWN;
             break;
         case 'x':
             gameOver = 1;
@@ -146,16 +166,52 @@ void logic()
     }
 }
 
+void updateFPS()
+{
+    frames++;
+    double currentTime = (double)clock() / CLOCKS_PER_SEC;
+    if (currentTime - lastTime >= 1.0)
+    {
+        fps = frames / (currentTime - lastTime);
+        frames = 0;
+        lastTime = currentTime;
+    }
+}
+
+void hideCursor()
+{
+    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO info;
+    info.dwSize = 100;
+    info.bVisible = FALSE; // FALSE = esconde o cursor
+    SetConsoleCursorInfo(consoleHandle, &info);
+}
+
+
 int main()
 {
     srand(time(0));
     setup();
+    hideCursor();
+
+    DWORD lastUpdate = GetTickCount();
+
     while (!gameOver)
     {
-        draw();
         input();
-        logic();
+
+        // cobra só anda a cada snakeDelay ms
+        if (GetTickCount() - lastUpdate >= (DWORD)snakeDelay)
+        {
+            logic();
+            lastUpdate = GetTickCount();
+        }
+
+        draw();       // sempre redesenha
+        updateFPS();  // atualiza FPS
+        Sleep(1);     // descanso mínimo (mantém FPS alto)
     }
-    printf("Game Over!\n");
+
+    printf("\nGame Over!\n");
     return 0;
 }
