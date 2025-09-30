@@ -3,6 +3,7 @@
 int pivotIndex();
 
 int main() {
+    
     return 0;
 }
 
