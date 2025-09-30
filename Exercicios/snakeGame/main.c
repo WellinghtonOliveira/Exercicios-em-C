@@ -33,6 +33,7 @@ void setup()
 
 void draw()
 {
+    Sleep(200);
     system("cls");
     for (int i = 0; i < WIDTH + 2; i++)
         printf("#");
@@ -154,7 +155,6 @@ int main()
         draw();
         input();
         logic();
-        Sleep(150); // velocidade
     }
     printf("Game Over!\n");
     return 0;
