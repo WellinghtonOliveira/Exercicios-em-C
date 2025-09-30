@@ -4,7 +4,7 @@ int pivotIndex();
 
 int main() {
     
-    
+    pivotIndex(1, 21);
 
     return 0;
 }
