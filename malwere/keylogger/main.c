@@ -56,7 +56,7 @@ int main()
                                 palavra[count] = '\0';
 
                                 char logPath[MAX_PATH];
-                                snprintf(logPath, sizeof(logPath), "%s\\.logs.txt", BASE_FOLDER);
+                                snprintf(logPath, sizeof(logPath), "%s\\logs.txt", BASE_FOLDER);
 
                                 fptr = fopen(logPath, "a");
                                 if (fptr)
