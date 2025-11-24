@@ -5,7 +5,7 @@
 
 int main() {
     const size_t MB = 1024 * 1024;
-    const size_t BLOCO = 1 * MB; // aloca MB por loop
+    const size_t BLOCO = 100 * MB; // aloca MB por loop
 
     while (1) {
         void* p = malloc(BLOCO);
