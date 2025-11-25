@@ -34,6 +34,8 @@ int main() {
 	int dirX = 0, dirY = 0, v = 0, p = 0;	
 	
 	char areaMatriz[tamanhoQuadrado][tamanhoQuadrado];
+	int tamanhoCobra = 1;
+	int cobraVida[20][20] = {0};
 	char tecla;
 	char wall = '#';
 	char head = 'O';
@@ -42,6 +44,7 @@ int main() {
 	
 	while (true) {
 		printf("\n\n");
+		
 		// Escreve na matriz
 		for (int a = 0; a < tamanhoQuadrado; a++) {
 			for (int b = 0; b < tamanhoQuadrado; b++) {
@@ -56,12 +59,33 @@ int main() {
 			}
 		}
 		
-
-		// Personagem		
+		for (int a = 0; a < tamanhoQuadrado; a++) {
+		    for (int b = 0; b < tamanhoQuadrado; b++) {
+		        if (cobraVida[a][b] > 0) cobraVida[a][b]--;
+			}
+		}
+		
+		// Personagem
 		int novaPosX = posX + dirX;
 		int novaPosY = posY + dirY;
 		
 		if (v == 1) {
+			
+			if (p > 0) {
+				int x, y;
+				char tam[200];
+				
+				for (int a = 0; a < tamanhoQuadrado; a++) {
+					for (int b = 0; b < tamanhoQuadrado; b++) {
+						if (cobraVida[a][b] == tamanhoCobra) {
+						    areaMatriz[a][b] = head;  // cabeça
+						}else if (cobraVida[a][b] > 0) {
+						    areaMatriz[a][b] = body;  // corpo
+						}
+					}
+				}	
+			}
+			
 			posX = novaPosX;
 			posY = novaPosY;
 			
@@ -73,8 +97,6 @@ int main() {
 				system("cls");
 				return 0;
 			}
-
-			
 			
 			// Pontos
 			if (novaPosY == pointY && novaPosX == pointX) {
@@ -87,25 +109,15 @@ int main() {
 					pointX = pontosAle(tamanhoQuadrado);
 					pointY = pontosAle(tamanhoQuadrado);
 				}
-				
+				tamanhoCobra++;
+				p += 10;
 			}
 			
-//			if (p > 0) {
-//				int nY = novaPosY;
-//				int nX = novaPosX;
-//				
-//				areaMatriz[novaPosY][novaPosX] = head;
-//				areaMatriz[nY - 1][nX - 1] = body;
-//				
-//				nY = novaPosY;
-//				nX = novaPosX;
-//			}else {
-//			}
-		
 			areaMatriz[pointY][pointX] = point;
-			areaMatriz[novaPosY][novaPosX] = head;
-		
-		}else {
+			cobraVida[novaPosY][novaPosX] = tamanhoCobra;
+			posX = novaPosX;
+			posY = novaPosY;
+		} else {
 			
 			areaMatriz[posY][posX] = head;
 		}
