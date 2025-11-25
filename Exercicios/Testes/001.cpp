@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <windows.h>
 #include <conio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int pontosAle(int tamanhoQuadrado) {
+	srand(time(NULL));
+	return rand() % tamanhoQuadrado;
+}
 
 void habilitarANSI() {
 	SetConsoleOutputCP(CP_UTF8);
@@ -19,27 +26,29 @@ void limparTela() {
 int main() {
 	habilitarANSI();
 
+
 	int tamanhoQuadrado = 20;
 	int posX = tamanhoQuadrado / 2, posY = tamanhoQuadrado / 2;
-	int dirX = 0, dirY = 0, v = 0;	
+	int pointX = pontosAle(tamanhoQuadrado);
+	int pointY = pontosAle(tamanhoQuadrado);
+	int dirX = 0, dirY = 0, v = 0, p = 0;	
 	
 	char areaMatriz[tamanhoQuadrado][tamanhoQuadrado];
 	char tecla;
+	char wall = '#';
+	char head = 'O';
+	char body = 'o';
+	char point = '+';
 	
 	while (true) {
 		printf("\n\n");
-		
 		// Escreve na matriz
 		for (int a = 0; a < tamanhoQuadrado; a++) {
 			for (int b = 0; b < tamanhoQuadrado; b++) {
-//				if (v == 1) {
-//					areaMatriz[k][j] = '0';
-//					continue;
-//				}
-				
+							
 				if (a == tamanhoQuadrado - tamanhoQuadrado || a == tamanhoQuadrado - 1 || 
 					b == tamanhoQuadrado - tamanhoQuadrado || b == tamanhoQuadrado - 1 ) {
-					areaMatriz[a][b] = '#';
+					areaMatriz[a][b] = wall;
 					continue;
 				}
 				
@@ -47,26 +56,60 @@ int main() {
 			}
 		}
 		
-		//personagem				
+
+		// Personagem		
 		int novaPosX = posX + dirX;
 		int novaPosY = posY + dirY;
+		
 		if (v == 1) {
 			posX = novaPosX;
 			posY = novaPosY;
-			areaMatriz[novaPosY][novaPosX] = 'O';
+			
+			// Verifica colisão com a parede
+			if (posY == tamanhoQuadrado - tamanhoQuadrado || posY == tamanhoQuadrado - 1 || 
+				posX == tamanhoQuadrado - tamanhoQuadrado || posX == tamanhoQuadrado - 1 ) {
+				
+				system("pause");
+				system("cls");
+				return 0;
+			}
+
+			
+			
+			// Pontos
+			if (novaPosY == pointY && novaPosX == pointX) {
+				
+				pointX = pontosAle(tamanhoQuadrado);
+				pointY = pontosAle(tamanhoQuadrado);
+				while (pointX <= 0 || pointY <= 0 ||
+					pointX >= tamanhoQuadrado - 1 || pointY >= tamanhoQuadrado - 1) {
+				
+					pointX = pontosAle(tamanhoQuadrado);
+					pointY = pontosAle(tamanhoQuadrado);
+				}
+				
+			}
+			
+//			if (p > 0) {
+//				int nY = novaPosY;
+//				int nX = novaPosX;
+//				
+//				areaMatriz[novaPosY][novaPosX] = head;
+//				areaMatriz[nY - 1][nX - 1] = body;
+//				
+//				nY = novaPosY;
+//				nX = novaPosX;
+//			}else {
+//			}
+		
+			areaMatriz[pointY][pointX] = point;
+			areaMatriz[novaPosY][novaPosX] = head;
+		
 		}else {
-			areaMatriz[posY][posX] = 'O';
+			
+			areaMatriz[posY][posX] = head;
 		}
 
-		// Coordenadas do desenho		
-//		if (v == 1) {
-//			if (k <= 19) {
-//				j++;
-//			}else {
-//				k++;
-//			}
-//		}
-		
 		// Desenhar na tela
 		for (int a = 0; a < tamanhoQuadrado; a++) {
 			printf("   ");
@@ -82,32 +125,48 @@ int main() {
             switch (tecla) {
                 case 'w':
                 case 'W':
-                    printf("Mover para Cima\n");
+                
+                	dirX = 0;
+					dirY = -1;
+                    printf("Mover para Cima");
                     break;
-                case 's':
+                
+				case 's':
                 case 'S':
-                    printf("Mover para Baixo\n");
+                
+                	dirX = 0;
+					dirY = 1;
+                    printf("Mover para Baixo");
                     break;
-                case 'a':
+                
+				case 'a':
                 case 'A':
-                	dirX = -1;
-                    printf("Mover para Esquerda\n");
+                
+                	dirY = 0;
+					dirX = -1;
+                    printf("Mover para Esquerda");
                     break;
-                case 'd':
+                
+				case 'd':
                 case 'D':
-                	dirX = 1;
-                    printf("Mover para Direita\n");
+                
+                	dirY = 0;
+					dirX = 1;
+                    printf("Mover para Direita");
                     break;
-                case 'q':
+                
+				case 'q':
                 case 'Q':
-                    printf("Saindo...\n");
+                    printf("Saindo...");
                     return 0; // Sai do programa
-            }
+			}
+			
+			tecla = '\0';
             v = 1;
 		}
 		
 		printf("\n\n");
-		Sleep(100);
+		Sleep(200);
 		limparTela();
 	}
 	
