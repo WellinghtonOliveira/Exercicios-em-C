@@ -34,7 +34,7 @@ int main() {
 
     char areaMatriz[tamanhoQuadrado][tamanhoQuadrado];
     int tamanhoCobra = 1;
-    int cobraVida[tamanhoQuadrado][tamanhoQuadrado] = {0};
+    char cobraVida[tamanhoQuadrado][tamanhoQuadrado] = {};
 
     char tecla;
     char wall = '#';
@@ -92,7 +92,9 @@ int main() {
                 if (a == 0 || a == tamanhoQuadrado - 1 ||
                     b == 0 || b == tamanhoQuadrado - 1) {
                     areaMatriz[a][b] = wall;
-                } 
+                } else {
+                    areaMatriz[a][b] = '-';
+                }
             }
         }
 
