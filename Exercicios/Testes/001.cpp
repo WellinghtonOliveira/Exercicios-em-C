@@ -92,9 +92,7 @@ int main() {
                 if (a == 0 || a == tamanhoQuadrado - 1 ||
                     b == 0 || b == tamanhoQuadrado - 1) {
                     areaMatriz[a][b] = wall;
-                } else {
-                    areaMatriz[a][b] = '-';
-                }
+                } 
             }
         }
 
