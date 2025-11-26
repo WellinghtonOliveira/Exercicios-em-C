@@ -71,7 +71,7 @@ int main() {
                 tamanhoCobra++;
                 p += 10;
                 
-                if (p >= 200 && vel >= 0) vel -= 5;
+                if (p >= 100 && vel >= 0) vel -= 5;
 
                 // novo ponto
                 do {
@@ -81,8 +81,7 @@ int main() {
                     pointX = pontosAle(tamanhoQuadrado);
                     pointY = pontosAle(tamanhoQuadrado);
                 } while (pointX <= 1 || pointX >= tamanhoQuadrado - 2 || 
-						 pointY <= 1 || pointY >= tamanhoQuadrado - 2 ||
-            			 cobraVida[novaPosY][novaPosX] == tamanhoCobra);
+						 pointY <= 1 || pointY >= tamanhoQuadrado - 2);
 			}
 
             // atualiza cabeça
