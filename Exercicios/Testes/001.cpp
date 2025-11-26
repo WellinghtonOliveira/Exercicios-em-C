@@ -30,7 +30,7 @@ int main() {
     int posX = tamanhoQuadrado / 2, posY = tamanhoQuadrado / 2;
     int pointX = pontosAle(tamanhoQuadrado);
     int pointY = pontosAle(tamanhoQuadrado);
-    int dirX = 0, dirY = 0, v = 0, p = 0;
+    int dirX = 0, dirY = 0, v = 0, p = 0, vel = 300;
 
     char areaMatriz[tamanhoQuadrado][tamanhoQuadrado];
     int tamanhoCobra = 1;
@@ -70,14 +70,20 @@ int main() {
             if (novaPosY == pointY && novaPosX == pointX) {
                 tamanhoCobra++;
                 p += 10;
+                
+                if (p >= 200 && vel >= 0) vel -= 5;
 
                 // novo ponto
                 do {
+                	pointX = tamanhoQuadrado / 2;
+                	pointY = tamanhoQuadrado / 2;
+                	
                     pointX = pontosAle(tamanhoQuadrado);
                     pointY = pontosAle(tamanhoQuadrado);
-                } while (pointX <= 0 || pointX >= tamanhoQuadrado - 1 ||
-                         pointY <= 0 || pointY >= tamanhoQuadrado - 1);
-            }
+                } while (pointX <= 1 || pointX >= tamanhoQuadrado - 2 || 
+						 pointY <= 1 || pointY >= tamanhoQuadrado - 2 ||
+            			 cobraVida[novaPosY][novaPosX] == tamanhoCobra);
+			}
 
             // atualiza cabeça
             cobraVida[novaPosY][novaPosX] = tamanhoCobra;
@@ -93,7 +99,7 @@ int main() {
                     b == 0 || b == tamanhoQuadrado - 1) {
                     areaMatriz[a][b] = wall;
                 } else {
-                    areaMatriz[a][b] = '-';
+                    areaMatriz[a][b] = ' ';
                 }
             }
         }
@@ -157,8 +163,11 @@ int main() {
             tecla = '\0';
             v = 1;
         }
-
-        Sleep(200);
+		
+		printf("\n");
+		printf("  | Velocidade: %d\n", vel);	
+		printf("  | Seus pontos: %d\n\n", p);
+        Sleep(vel);
         limparTela();
     }
 }
