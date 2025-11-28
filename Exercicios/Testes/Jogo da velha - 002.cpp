@@ -21,15 +21,15 @@ int main() {
 	attPosPlayer('i');
 	
 	conf_tela();
+	desenhaTela('i');
 	
 	attInputs();
-	
-	system("pause");
 	return 0;
 }
 
 
-void desenhaTela(char input = 'p') {	
+void desenhaTela(char input = 'p') {
+	system("cls");
 	char tecla = input;
 	
 	int div = tamanho / 3;
@@ -47,37 +47,164 @@ void desenhaTela(char input = 'p') {
 			}
 		}
 	}
-
+	
 	// Desenha na tela
 	printf("\n\n\n\n\n\n");
 	for (int a = 0; a < tamanho; a++) {
 		printf("				");
 		for(int b = 0; b < tamanho; b++) {
 			
+			for (int y = 0; y < 3; y++) { // Verifica coodernadas do player
+				for (int x = 0; x < 3; x++) {
+					if (posPlayer[y][x] == 1) {
+						coordenadasPlayer[0] = y;
+						coordenadasPlayer[1] = x; 
+					}
+				}
+			}
 			
-			if (tecla == 'w' || tecla == 'W') {
+			if (coordenadasPlayer[0] == 0 && coordenadasPlayer[1] == 0) {
+				
+				// Canto superior esquerdo
+				if (b == 0 && a >= 0 && a <= div - 1 ||
+					b == div - 1 && a >= 0 && a <= div - 1 ||
+					a == 0 && b <= div - 1 ||
+					a == div - 1 && b <= div - 1) {
+					
+					printf("- ");
+					continue;	
+				}
+			
+			}else if (coordenadasPlayer[0] == 0 && coordenadasPlayer[1] == 1) {
+				
+				// meio superior
 				if (b == div + 1 && a >= 0 && a <= div - 1 ||
 					b == (div * 2) - 1 && a >= 0 && a <= div - 1 ||
 					a == 0 && b >= div + 1 && b <= (div * 2) - 1 ||
 					a == div - 1 && b >= div + 1 && b <= (div * 2) - 1) {
 					
 					printf("- ");
-					//tela[a][b] = '-';
 					continue;	
 				}
-			}
 				
-			// meio
-			if (b == div + 1 && a >= div + 1 && a <= (div * 2) - 1 ||
-			    b == (div * 2) - 1 && a >= div + 1 && a <= (div * 2) - 1 ||
-				a == div + 1 && b >= div + 1 && b <= (div * 2) - 1 ||
-				a == (div * 2) - 1 && b >= div + 1 && b <= (div * 2) - 1) {
+			}else if (coordenadasPlayer[0] == 0 && coordenadasPlayer[1] == 2) {
 				
-				printf("- ");
-				//tela[a][b] = '-';
-				continue;
+				// Canto superior direito
+				if (b == (div * 2) + 1 && a <= div - 1 ||
+					b == (div * 3) - 1 && a <= div - 1 ||
+					a == 0 && b >= (div * 2) + 1 ||
+					a == div - 1 && b >= (div * 2) + 1) {
+					
+					printf("- ");
+					continue;	
+				}
+			
+			}else if (coordenadasPlayer[0] == 1 && coordenadasPlayer[1] == 0) {
+				
+				// Meio esquerdo
+				if (b == 0 && a <= (div * 2) - 1 && a >= div + 1 ||
+					b == div - 1 && a <= (div * 2) - 1 && a >= div + 1 ||
+					a == div + 1 && b <= div - 1 ||
+					a == (div * 2) - 1 && b <= div - 1) {
+					
+					printf("- ");
+					continue;
+				}
+			
+			}else if (coordenadasPlayer[0] == 1 && coordenadasPlayer[1] == 1) {
+				
+				// Meio
+				if (b == div + 1 && a >= div + 1 && a <= (div * 2) - 1 ||
+				    b == (div * 2) - 1 && a >= div + 1 && a <= (div * 2) - 1 ||
+					a == div + 1 && b >= div + 1 && b <= (div * 2) - 1 ||
+					a == (div * 2) - 1 && b >= div + 1 && b <= (div * 2) - 1) {
+					
+					printf("- ");
+					continue;
+				}
+				
+			}else if (coordenadasPlayer[0] == 1 && coordenadasPlayer[1] == 2) {
+			
+				// Meio direito
+				if (b == (div * 2) + 1 && a <= (div * 2) - 1 && a >= div + 1 ||
+					b == (div * 3) - 1 && a <= (div * 2) - 1 && a >= div + 1 ||
+					a == div + 1 && b >= (div * 2) + 1 ||
+					a == (div * 2) - 1 && b >= (div * 2) + 1) {
+					
+					printf("- ");
+					continue;
+				}
+			
+			}else if (coordenadasPlayer[0] == 2 && coordenadasPlayer[1] == 0) {
+			
+				// Canto inferior esquerdo
+				if (b == 0 && a >= (div * 2) + 1 ||
+					b == div - 1 && a >= (div * 2) + 1 ||
+					a == (div * 2) + 1 && b <= div - 1 ||
+					a == (div * 3) - 1 && b <= div - 1) {
+					
+					printf("- ");
+					continue;	
+				}
+			
+			}else if (coordenadasPlayer[0] == 2 && coordenadasPlayer[1] == 1) {
+			
+				// Meio Inferior
+				if (b == div + 1 && a >= (div * 2) + 1 ||
+					b == (div * 2) - 1 && a >= (div * 2) + 1 ||
+					a == (div * 2) + 1 && b >= div + 1 && b <= (div * 2) - 1 ||
+					a == (div * 3) - 1 && b >= div + 1 && b <= (div * 2) - 1) {
+					
+					printf("- ");
+					continue;	
+				}
+			
+			}else if (coordenadasPlayer[0] == 2 && coordenadasPlayer[1] == 2) {
+			
+				// Canto inferior direito
+				if (b == (div * 2) + 1 && a >= (div * 2) + 1 ||
+					b == (div * 3) - 1 && a >= (div * 2) + 1 ||
+					a == (div * 2) + 1 && b >= (div * 2) + 1 ||
+					a == (div * 3) - 1 && b >= (div * 2) + 1) {
+					
+					printf("- ");
+					continue;	
+				}
+			
 			}
-		
+			
+			
+			if (input == 'i') {
+				// meio
+				if (b == div + 1 && a >= div + 1 && a <= (div * 2) - 1 ||
+				    b == (div * 2) - 1 && a >= div + 1 && a <= (div * 2) - 1 ||
+					a == div + 1 && b >= div + 1 && b <= (div * 2) - 1 ||
+					a == (div * 2) - 1 && b >= div + 1 && b <= (div * 2) - 1) {
+					
+					printf("- ");
+					continue;
+				}
+
+
+/*
+
+     Ultima parada, tentando desenhar um X em alguns dos quadrados 
+	tentando fazer uma logica para desenhar com um loop, ou chamar uma função
+	desenhar por cima ou atualizar pela poscisao no jogador
+
+*/
+
+				if (a >= 1 && a <= 11 && b <= 11) {
+					if (a == 1 && b < 3) {
+						printf("- ");
+						continue;
+					}
+					printf("o ");
+					continue;
+				}
+			}
+			
+			
 			printf("%c ", tela[a][b]);	
 		}
 		printf("\n");
@@ -131,48 +258,57 @@ void attPosPlayer(char conf = 'p') {
 		}
 	}
 	
-	
 	for (int a = 0; a < 3; a++) {
 		for (int b = 0; b < 3; b++) {
 			
 			switch (conf){
-				case 'w': case 'W':
+				
+				case 'w':
 					if (posPlayer[a][b] == 1 && a > 0) {
-							posPlayer[a][b] = 0;
-							posPlayer[a - 1][b] = 1; 
-						}
+						posPlayer[a][b] = 0;
+						posPlayer[a -= 1][b] = 1;
+						desenhaTela('w');
 					}
 					break;
 				
-				case 's': case 'S':
+				case 's':
 					if (posPlayer[a][b] == 1 && a < 2) {
 						posPlayer[a][b] = 0;
-						posPlayer[a + 1][b] = 1; 
+						posPlayer[a += 1][b] = 1;
+						desenhaTela('s');
 					}
 					break;
 						
+				case 'd':
+					if (posPlayer[a][b] == 1 && b < 2) {
+						posPlayer[a][b] = 0;
+						posPlayer[a][b += 1] = 1;
+						desenhaTela('d');
+					}
+					break;
+				
+				case 'a':
+					if (posPlayer[a][b] == 1 && b > 0) {
+						posPlayer[a][b] = 0;
+						posPlayer[a][b -= 1] = 1;
+						desenhaTela('a');
+					}
+					break;
+				
 				default:
 					break;
 			}
-				
-//			if (posPlayer[a][b] == 1) {
-//				coordenadasPlayer[0] = a;
-//				coordenadasPlayer[1] = b;
-//				desenhaTela();
-//				return;
-//			}
 		}
-		
 	}
 
-	
-	for (int a = 0; a < 3; a++) {
-		for (int b = 0; b < 3; b++) {
-			printf("%d ", posPlayer[a][b]);
-		}
-		printf("\n");
-	}
-	printf("\n\n");
+//	system("cls");
+//	for (int a = 0; a < 3; a++) {
+//		for (int b = 0; b < 3; b++) {
+//			printf("%d ", posPlayer[a][b]);
+//		}
+//		printf("\n");
+//	}
+//	printf("\n\n");
 }
 
 void conf_tela() {
