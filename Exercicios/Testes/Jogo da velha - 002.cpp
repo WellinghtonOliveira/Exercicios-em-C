@@ -329,7 +329,7 @@ void conf_tela() {
     rect.Left = 0;
     rect.Top = 0;
     rect.Right = 150;
-    rect.Bottom = 55;
+    rect.Bottom = 70;
     SetConsoleWindowInfo(hConsole, TRUE, &rect);
 
     // Estrutura para configurar fonte
@@ -337,7 +337,7 @@ void conf_tela() {
     cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
     cfi.nFont = 0;
     cfi.dwFontSize.X = 0;      // largura automática
-    cfi.dwFontSize.Y = 5;     // altura da fonte (o que você quer)
+    cfi.dwFontSize.Y = 50;     // altura da fonte (o que você quer)
     cfi.FontFamily = FF_DONTCARE;
     cfi.FontWeight = FW_NORMAL;
 
