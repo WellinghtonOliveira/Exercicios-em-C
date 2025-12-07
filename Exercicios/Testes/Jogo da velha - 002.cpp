@@ -71,7 +71,7 @@ void desenhaTela(char input = 'p') {
 					a == 0 && b <= div - 1 ||
 					a == div - 1 && b <= div - 1) {
 					
-					printf("- ");
+					printf("- "); 
 					continue;	
 				}
 			
@@ -124,10 +124,10 @@ void desenhaTela(char input = 'p') {
 				}
 				
 			}else if (coordenadasPlayer[0] == 1 && coordenadasPlayer[1] == 2) {
-			
-				// Meio direito
+			  
+				// Meio direito 
 				if (b == (div * 2) + 1 && a <= (div * 2) - 1 && a >= div + 1 ||
-					b == (div * 3) - 1 && a <= (div * 2) - 1 && a >= div + 1 ||
+					b == (div * 3) - 1 && a <= (div * 2) - 1 && a >= div + 1 || 
 					a == div + 1 && b >= (div * 2) + 1 ||
 					a == (div * 2) - 1 && b >= (div * 2) + 1) {
 					
@@ -136,7 +136,7 @@ void desenhaTela(char input = 'p') {
 				}
 			
 			}else if (coordenadasPlayer[0] == 2 && coordenadasPlayer[1] == 0) {
-			
+			 
 				// Canto inferior esquerdo
 				if (b == 0 && a >= (div * 2) + 1 ||
 					b == div - 1 && a >= (div * 2) + 1 ||
@@ -337,7 +337,7 @@ void conf_tela() {
     cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
     cfi.nFont = 0;
     cfi.dwFontSize.X = 0;      // largura automática
-    cfi.dwFontSize.Y = 10;     // altura da fonte (o que você quer)
+    cfi.dwFontSize.Y = 5;     // altura da fonte (o que você quer)
     cfi.FontFamily = FF_DONTCARE;
     cfi.FontWeight = FW_NORMAL;
 
