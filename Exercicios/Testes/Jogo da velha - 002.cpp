@@ -2,10 +2,12 @@
 #include <conio.h>
 #include <iostream>
 #include <windows.h>
+#include <stdbool.h>
 
 void desenhaTela(char);
 void conf_tela(); // Configuração inicial da tela
 void attInputs();
+bool isWindowsTerminal();
 void attPosPlayer(char);
 
 const int tamanho = 42; // 42 tamanho padrão
@@ -300,51 +302,51 @@ void attPosPlayer(char conf = 'p') {
 			}
 		}
 	}
+		
+}
 
-//	system("cls");
-//	for (int a = 0; a < 3; a++) {
-//		for (int b = 0; b < 3; b++) {
-//			printf("%d ", posPlayer[a][b]);
-//		}
-//		printf("\n");
-//	}
-//	printf("\n\n");
+bool isWindowsTerminal() {
+    // Windows Terminal injeta a variável WT_SESSION
+    DWORD len = GetEnvironmentVariableA("WT_SESSION", NULL, 0);
+    return (len > 0);
 }
 
 void conf_tela() {
 
-    HWND console = GetConsoleWindow();
-    ShowWindow(console, SW_RESTORE);  // garante que pode diminuir
-
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    HWND console = GetConsoleWindow();
+    ShowWindow(console, SW_RESTORE);
 
-    // Definir buffer
-    COORD size;
-    size.X = 200;
-    size.Y = 200;
-    SetConsoleScreenBufferSize(hConsole, size);
+    bool terminal = isWindowsTerminal();
 
-    // Definir janela
-    SMALL_RECT rect;
-    rect.Left = 0;
-    rect.Top = 0;
-    rect.Right = 150;
-    rect.Bottom = 70;
-    SetConsoleWindowInfo(hConsole, TRUE, &rect);
+    // -----------------------------
+    //  1. Ajuste de janela
+    // -----------------------------
+    if (!terminal) {
+        // Modo completo — funciona no Console Clássico (Win10 e Win11)
+        SMALL_RECT small = {0, 0, 1, 1};
+        SetConsoleWindowInfo(hConsole, TRUE, &small);
 
-    // Estrutura para configurar fonte
-    CONSOLE_FONT_INFOEX cfi;
-    cfi.cbSize = sizeof(CONSOLE_FONT_INFOEX);
-    cfi.nFont = 0;
-    cfi.dwFontSize.X = 0;      // largura automática
-    cfi.dwFontSize.Y = 50;     // altura da fonte (o que você quer)
-    cfi.FontFamily = FF_DONTCARE;
-    cfi.FontWeight = FW_NORMAL;
+        COORD size = {200, 200};
+        SetConsoleScreenBufferSize(hConsole, size);
 
-    // Nome da fonte (Consolas é a mais estável no CMD)
-    wcscpy_s(cfi.FaceName, L"Consolas");
+        SMALL_RECT rect = {0, 0, 150, 60};
+        SetConsoleWindowInfo(hConsole, TRUE, &rect);
+    } else {
+        // Fallback mínimo (Windows Terminal limita comandos)
+        COORD size = {150, 60};
+        SetConsoleScreenBufferSize(hConsole, size);
+    }
 
-    // Aplicar a fonte
-    SetCurrentConsoleFontEx(hConsole, FALSE, &cfi);
+    // -----------------------------
+    //  2. Ajuste de fonte
+    // -----------------------------
+    // Fonte só funciona fora do Windows Terminal
+    if (!terminal) {
+        CONSOLE_FONT_INFOEX cfi = { sizeof(CONSOLE_FONT_INFOEX) };
+        cfi.dwFontSize.Y = 10;
+        wcscpy_s(cfi.FaceName, L"Consolas");
+        SetCurrentConsoleFontEx(hConsole, FALSE, &cfi);
+    }
 
 }
