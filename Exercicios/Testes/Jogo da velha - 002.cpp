@@ -187,15 +187,6 @@ void desenhaTela(char input = 'p') {
 					continue;
 				}
 
-
-/*
-
-     Ultima parada, tentando desenhar um X em alguns dos quadrados 
-	tentando fazer uma logica para desenhar com um loop, ou chamar uma função
-	desenhar por cima ou atualizar pela poscisao no jogador
-
-*/
-
 				if (a >= 1 && a <= 11 && b <= 11) {
 					if (a == 1 && b < 3) {
 						printf("- ");
