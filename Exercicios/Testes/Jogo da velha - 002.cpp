@@ -188,7 +188,12 @@ void desenhaTela(char input = 'p') {
 				}
 
 				if (a >= 1 && a <= 11 && b <= 11) {
+					int t = 0;
 					if (a == 1 && b < 3) {
+						
+						for (int m = 0; m < t; m++) {
+						}
+						
 						printf("- ");
 						continue;
 					}
