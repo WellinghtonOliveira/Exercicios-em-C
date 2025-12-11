@@ -34,6 +34,7 @@ void desenhaTela(char input = 'p') {
 	system("cls");
 	char tecla = input;
 	
+	int controleA = 0, controleB = 3;
 	int div = tamanho / 3;
 	
 	// Muda a matriz
@@ -187,16 +188,19 @@ void desenhaTela(char input = 'p') {
 					continue;
 				}
 
-				if (a >= 1 && a <= 11 && b <= 11) {
-					int controle_A = 0, controle_B = 0;
+				if (a >= 1 && a <= 11 && b <= 11 && b >= 1) {
 					
-					if (a == 1 && b < 3) {
+					if (b == a || b == (11 - a + 1) ||
+						b == a - 1 || b == (11 - a + 2) || 
+						b == a + 1 || b == (11 - a)) {
 						
-						printf("- ");
+						printf("O ");
 						continue;
-						
 					}
-					printf("o ");
+					
+					controleA++;
+					controleB++;
+					printf("  ");
 					continue;
 				}
 			}
