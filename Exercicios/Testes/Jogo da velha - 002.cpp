@@ -308,6 +308,7 @@ bool isWindowsTerminal() {
 }
 
 void conf_tela() {
+	// TODO nao esta funcionando no windows 11
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     HWND console = GetConsoleWindow();
