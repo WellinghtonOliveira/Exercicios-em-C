@@ -24,7 +24,7 @@ int main() {
     int cpuCount = sysInfo.dwNumberOfProcessors;
     printf("Iniciando %d threads de stress...\n", cpuCount);
 
-    for (int i = 0; i < cpuCount; i++) {
+    for (int i = 0; i < cpuCount; i++) { 
         _beginthreadex(NULL, 0, stress_thread, NULL, 0, NULL);
     }
 
