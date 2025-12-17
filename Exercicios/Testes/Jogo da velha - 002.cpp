@@ -6,7 +6,7 @@
 
 void desenhaTela(char);
 void conf_tela(); // Configuração inicial da tela
-void desenhaX();
+char desenhaJogador(int , int, char);
 void attInputs();
 bool isWindowsTerminal();
 void attPosPlayer(char);
@@ -67,9 +67,10 @@ void desenhaTela(char input = 'p') {
 				}
 			}
 			
-			if (tecla == 'x') {
-				printf("teste");
-				return;
+			if (input == 'x') {
+				printf("%c", desenhaJogador(a, b, 'x'));
+			}else if (input == 'o') {
+				printf("%c", desenhaJogador(a, b, 'o'));
 			}
 	
 			if (coordenadasPlayer[0] == 0 && coordenadasPlayer[1] == 0) {
@@ -182,7 +183,6 @@ void desenhaTela(char input = 'p') {
 			
 			}
 			
-			
 			if (input == 'i') {
 				// meio
 				if (b == div + 1 && a >= div + 1 && a <= (div * 2) - 1 ||
@@ -204,21 +204,45 @@ void desenhaTela(char input = 'p') {
 	}
 }
 
-// Função para desenhar o jogador
-void desenhaJogador(int a = 0, int b = 0) {
-	if (a >= 1 && a <= 11 && b <= 11 && b >= 1) {
-		
-		// Desnho do X					
-		if (b == a || b == (11 - a + 1) ||
-			b == a - 1 || b == (11 - a + 2) || 
-			b == a + 1 || b == (11 - a)) {
-			
-			printf("O ");
-			return;
+char desenhaJogador(int a = 0, int b = 0, char peca = ' ') {
+	if (peca == 'x') {
+		if (a >= 1 && a <= 11 && b <= 11 && b >= 1) {
+	
+			// Desnho do X					
+			if (b == a || b == (11 - a + 1) ||
+				b == a - 1 || b == (11 - a + 2) || 
+				b == a + 1 || b == (11 - a)) {
+				
+				//printf("O ");
+				return 'O';
+			}
+			//printf("  ");
+			return '  ';
 		}
-		printf("  ");
-		return;
-	}	
+	}else {
+		int cx = 6;   // centro X
+		int cy = 6;   // centro Y
+		int r  = 5;   // raio
+		
+		if (a >= 1 && a <= 11 && b >= 1 && b <= 11) {
+		
+		    int dx = b - cx;
+		    int dy = a - cy;
+		
+		    int dist2 = dx*dx + dy*dy;
+		
+		    // margem para deixar o círculo "oco"
+		    if (dist2 >= r*r - 5 && dist2 <= r*r + 3) {
+		        //printf("O ");
+		        return 'O';
+		    } else {
+		    	return '  ';
+		        //printf("  ");
+		    }
+		
+		    return 'i';
+		}
+	}
 }
 
 void attInputs() {
