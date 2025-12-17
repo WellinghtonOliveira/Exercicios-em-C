@@ -6,6 +6,7 @@
 
 void desenhaTela(char);
 void conf_tela(); // Configuração inicial da tela
+void desenhaX();
 void attInputs();
 bool isWindowsTerminal();
 void attPosPlayer(char);
@@ -13,6 +14,7 @@ void attPosPlayer(char);
 const int tamanho = 42; // 42 tamanho padrão
 
 int posPlayer[3][3] = {};
+int posJogadas[3][3] = {};
 int coordenadasPlayer[2] = {};
 
 char tela[tamanho][tamanho] = {};
@@ -65,6 +67,11 @@ void desenhaTela(char input = 'p') {
 				}
 			}
 			
+			if (tecla == 'x') {
+				printf("teste");
+				return;
+			}
+	
 			if (coordenadasPlayer[0] == 0 && coordenadasPlayer[1] == 0) {
 				
 				// Canto superior esquerdo
@@ -76,7 +83,7 @@ void desenhaTela(char input = 'p') {
 					printf("- "); 
 					continue;	
 				}
-			
+	
 			}else if (coordenadasPlayer[0] == 0 && coordenadasPlayer[1] == 1) {
 				
 				// meio superior
@@ -187,19 +194,7 @@ void desenhaTela(char input = 'p') {
 					continue;
 				}
 
-				if (a >= 1 && a <= 11 && b <= 11 && b >= 1) {
-					
-					// Desnho do X					
-					if (b == a || b == (11 - a + 1) ||
-						b == a - 1 || b == (11 - a + 2) || 
-						b == a + 1 || b == (11 - a)) {
-						
-						printf("O ");
-						continue;
-					}
-					printf("  ");
-					continue;
-				}
+
 			}
 			
 			
@@ -207,6 +202,23 @@ void desenhaTela(char input = 'p') {
 		}
 		printf("\n");
 	}
+}
+
+// Função para desenhar o jogador
+void desenhaJogador(int a = 0, int b = 0) {
+	if (a >= 1 && a <= 11 && b <= 11 && b >= 1) {
+		
+		// Desnho do X					
+		if (b == a || b == (11 - a + 1) ||
+			b == a - 1 || b == (11 - a + 2) || 
+			b == a + 1 || b == (11 - a)) {
+			
+			printf("O ");
+			return;
+		}
+		printf("  ");
+		return;
+	}	
 }
 
 void attInputs() {
@@ -230,6 +242,9 @@ void attInputs() {
 				case 'd': case 'D':
 					attPosPlayer('d');
 					break;
+				case ' ':
+					attPosPlayer('j'); // j de jogador
+					break;
 				
 				default:
 					continue;
@@ -248,9 +263,10 @@ void attPosPlayer(char conf = 'p') {
 		for (int a = 0; a < 3; a++) {
 			for (int b = 0; b < 3; b++) {
 				posPlayer[a][b] = 0;
+				posJogadas[a][b] = 0;
 					
 				if (a == 1 && b == 1) {
-					posPlayer[a][b] = 1;	
+					posPlayer[a][b] = 1;
 				}
 			}
 		}
@@ -260,6 +276,13 @@ void attPosPlayer(char conf = 'p') {
 		for (int b = 0; b < 3; b++) {
 			
 			switch (conf){
+				
+				case 'j':
+					if (posPlayer[a][b] == 1){
+						posJogadas[a][b] = 1;
+						desenhaTela('x');
+					}
+					break;
 				
 				case 'w':
 					if (posPlayer[a][b] == 1 && a > 0) {
@@ -295,6 +318,8 @@ void attPosPlayer(char conf = 'p') {
 				
 				default:
 					break;
+					
+				conf = '\0';
 			}
 		}
 	}
