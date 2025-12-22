@@ -12,7 +12,7 @@ unsigned __stdcall stress_thread(void* arg) {
             x += sin(i) * cos(i) * tan(1.2345);
             x = sqrt(fabs(x)) * 1.000001;
         }
-    }
+    } 
 
     return 0;
 }
