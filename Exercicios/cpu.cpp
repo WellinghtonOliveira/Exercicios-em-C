@@ -15,7 +15,7 @@ unsigned __stdcall stress_thread(void* arg) {
     } 
 
     return 0;
-}
+} 
 
 int main() {
     SYSTEM_INFO sysInfo;
